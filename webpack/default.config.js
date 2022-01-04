@@ -1,21 +1,24 @@
 // webpack.config.js
 const path = require("path");
 const webpack = require("webpack");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css到单独文件的插件
-const { VueLoaderPlugin } = require('vue-loader/dist/index');
+const { VueLoaderPlugin } = require("vue-loader/dist/index");
 
 const envMode = process.env.envMode;
 
 module.exports = {
-  mode: "development",
   entry: path.resolve(__dirname, "../src/index.js"),
   output: {
-    filename: "js/[name].[contenthash].js",
+    filename: "js/[name].[contenthash:8].js",
     path: path.resolve(__dirname, "../dist"),
-    publicPath: '',
-		clean: true
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "../src"),
+    },
+    modules: ["node_modules", "*"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".json", ".vue"],
   },
   module: {
     rules: [
@@ -28,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["css-loader", "postcss-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
       {
         test: /\.less$/,
@@ -52,10 +55,9 @@ module.exports = {
         envMode,
       },
     }),
-    new FriendlyErrorsWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: "./css/[name].[contenthash].css",
-      chunkFilename: "./css/[id].[contenthash].css",
+      filename: "./css/[name].[contenthash:8].css",
+      chunkFilename: "./css/[id].[contenthash:8].css",
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
