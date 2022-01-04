@@ -15,5 +15,13 @@
     "persistent": false
   },
   "options_page": "./option/index.html",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["./content/index.js"],
+      "css": ["./content/index.css"],
+      "run_at": "document_idle"
+    }
+  ],
   "permissions": ["activeTab", "storage"]
 }
