@@ -1,18 +1,12 @@
 // webpack.config.js
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css到单独文件的插件
 const { VueLoaderPlugin } = require("vue-loader/dist/index");
 
 const envMode = process.env.envMode;
 
 module.exports = {
-  entry: path.resolve(__dirname, "../src/index.js"),
-  output: {
-    filename: "js/[name].[contenthash:8].js",
-    path: path.resolve(__dirname, "../dist"),
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "../src"),
@@ -58,19 +52,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "./css/[name].[contenthash:8].css",
       chunkFilename: "./css/[id].[contenthash:8].css",
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./index.html"),
-      filename: "index.html",
-      title: "chrome plugin",
-      minify: {
-        html5: true, // 根据HTML5规范解析输入
-        collapseWhitespace: true, // 折叠空白区域
-        preserveLineBreaks: false,
-        minifyCSS: true, // 压缩文内css
-        minifyJS: true, // 压缩文内js
-        removeComments: false, // 移除注释
-      },
     }),
     new VueLoaderPlugin(), //new一个实例
   ],
