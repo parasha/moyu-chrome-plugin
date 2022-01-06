@@ -1,5 +1,6 @@
 // webpack.config.js
 const path = require("path");
+const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const baseWebpack = require("./default.config");
 
@@ -26,7 +27,14 @@ const devWebpack = {
       }
       }
     }
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      // 定义环境和变量
+      ENV: 'production',
+      BIQUGE_DOMAIN: 'https://www.shuquge.com'
+    }),
+  ]
 };
 
 module.exports = merge(baseWebpack, devWebpack);

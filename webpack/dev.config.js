@@ -1,6 +1,7 @@
 // webpack.config.js
 const path = require("path");
 const { merge } = require("webpack-merge");
+const webpack = require("webpack");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const baseWebpack = require("./default.config");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -8,6 +9,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devWebpack = {
   mode: "development",
   entry: {
+    popup: path.resolve(__dirname, "../src/popup/index.js"),
     content: path.resolve(__dirname, "../src/content/index.js"),
     background: path.resolve(__dirname, "../src/background/index.js"),
   },
@@ -17,12 +19,20 @@ const devWebpack = {
     host: "localhost",
     port: 8011,
     open: true,
+    proxy: {
+      "/biquge-api": "https://www.shuquge.com",
+    },
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      // 定义环境和变量
+      ENV: JSON.stringify("development"),
+      BIQUGE_DOMAIN: JSON.stringify("https://www.shuquge.com"),
+    }),
     new FriendlyErrorsWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./index.html"),
+      template: path.resolve(__dirname, "../static/dev.html"),
       filename: "index.html",
       title: "chrome插件模拟demo",
       minify: {

@@ -12,6 +12,9 @@ export default {
 
 <style>
 .test{
-  color: red;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
 }
 </style>

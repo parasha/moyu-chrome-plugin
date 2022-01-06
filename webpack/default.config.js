@@ -1,10 +1,7 @@
 // webpack.config.js
 const path = require("path");
-const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css到单独文件的插件
 const { VueLoaderPlugin } = require("vue-loader/dist/index");
-
-const envMode = process.env.envMode;
 
 module.exports = {
   resolve: {
@@ -43,12 +40,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      // 定义环境和变量
-      "process.env": {
-        envMode,
-      },
-    }),
     new MiniCssExtractPlugin({
       filename: "./css/[name].[contenthash:8].css",
       chunkFilename: "./css/[id].[contenthash:8].css",
