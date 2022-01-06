@@ -1,18 +1,18 @@
-let changeColor = document.getElementById("changeColor");
+let button = document.getElementById("button");
 
-// button 的点击事件
-changeColor.addEventListener("click", () => {
-  console.log('change color div click');
-  // 获取tabs
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    console.log('get current tab:', tabs);
-    // 获取 storage 本地存储
-    chrome.storage.sync.get("color", ({ color }) => {
-      console.log('get storage color:', color);
-      // 操作tab
-      chrome.tabs.executeScript(tabs[0].id, {
-        code: 'document.body.style.backgroundColor = "' + color + '";',
-      });
-    });
-  });
+const bg = chrome.extension.getBackgroundPage();
+
+// 使用长连接
+const port = chrome.extension.connect({
+  name: "popup",
+});
+
+button.onclick = () => {
+  // 使用postMs 发送信息
+  port.postMessage("给 background 传递信息~");
+};
+
+// 接收信息
+port.onMessage.addListener((msg) => {
+  console.log("接收的信息：", msg);
 });

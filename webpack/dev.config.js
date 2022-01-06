@@ -8,11 +8,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const devWebpack = {
   mode: "development",
-  entry: {
-    popup: path.resolve(__dirname, "../src/popup/index.js"),
-    content: path.resolve(__dirname, "../src/content/index.js"),
-    background: path.resolve(__dirname, "../src/background/index.js"),
-  },
   devServer: {
     historyApiFallback: true,
     hot: true,

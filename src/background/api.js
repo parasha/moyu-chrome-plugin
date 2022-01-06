@@ -1,8 +1,7 @@
-import { Request } from "@/utils/request";
+import { Request } from "@/common/js/request";
 import cheerio from "cheerio";
 
 // 这里主要处理请求
-console.log("background request domain:", BIQUGE_DOMAIN);
 const request = new Request(BIQUGE_DOMAIN, {
   headers: { "Content-Type": "application/x-www-form-urlencoded" },
 });
