@@ -1,22 +1,39 @@
 <template>
-  <field
+  <Field
     class="book-search"
     v-model="bookname"
     left-icon="search"
     placeholder="小说名称、作者"
+    @keydown="handleKeyDown"
   />
 </template>
 
 <script>
 import { ref } from "vue";
-import { Field } from "vant";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { Field, Button } from "vant";
+
 export default {
-  components: { Field },
+  components: { Field, Button },
   setup() {
     const bookname = ref("");
 
+    const store = useStore();
+    const router = useRouter();
+
+    const handleKeyDown = async (e) => {
+      if (e.keyCode === 13) {
+        store.commit("setLoading", true);
+        await store.dispatch("searchBook", bookname.value);
+        store.commit("setLoading", false);
+        router.push("/search");
+      }
+    };
+
     return {
       bookname,
+      handleKeyDown,
     };
   },
 };

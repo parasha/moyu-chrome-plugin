@@ -5,9 +5,9 @@ const { VueLoaderPlugin } = require("vue-loader/dist/index");
 
 module.exports = {
   entry: {
-    popup: path.resolve(__dirname, "../src/popup/main.js"),
-    content: path.resolve(__dirname, "../src/content/main.js"),
     background: path.resolve(__dirname, "../src/background/index.js"),
+    content: path.resolve(__dirname, "../src/content/main.js"),
+    popup: path.resolve(__dirname, "../src/popup/main.js"),
   },
   resolve: {
     alias: {

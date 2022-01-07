@@ -12,7 +12,7 @@ const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
  * 搜书
  * @param {string} bookname
  */
-export const search = async (bookname) => {
+export const searchBook = async (bookname) => {
   const res = await request.post(
     `/search.php?searchkey=${encodeURIComponent(bookname)}`
   );
@@ -25,10 +25,9 @@ export const search = async (bookname) => {
     result.push({
       title,
       url,
-      id: url.match(bookIdReg)[1]
+      id: url.match(bookIdReg)[1],
     });
   });
-  console.log(result);
   return result;
 };
 
@@ -38,7 +37,7 @@ const chapterIdReg = /([0-9]+)\.html/;
  * 章节列表
  * @param {string} bookurl
  */
-export const getChapter = async (bookurl) => {
+export const getBookChapter = async (bookurl) => {
   const res = await request.get(bookurl);
   const $ = cheerio.load(res);
   let chapterList = [];
@@ -63,24 +62,23 @@ export const getChapter = async (bookurl) => {
     }
   });
   chapterList = chapterList.splice(firstChapterIndex);
-  console.log(chapterList);
   return chapterList;
 };
 
-export const getContent = async (bookId, chapterurl) => {
+export const getBookContent = async (bookId, chapterurl) => {
   const res = await request.get(`/txt/${bookId}/${chapterurl}`);
   const $ = cheerio.load(res);
-  let content = $('#content').html();
+  let content = $("#content").html();
   // 文案处理
-  content = content.replaceAll(' ', '');
-  content = content.replaceAll('&nbsp;', '');
-  content = content.replaceAll('\n', '');
+  content = content.replaceAll(" ", "");
+  content = content.replaceAll("&nbsp;", "");
+  content = content.replaceAll("\n", "");
 
-  let sectionList = content.split('<br>');
-  sectionList = sectionList.filter(section => !!section);
-  let result = '';
-  sectionList.forEach(section=>{
-    result += `<div>${section}</div>`
+  let sectionList = content.split("<br>");
+  sectionList = sectionList.filter((section) => !!section);
+  let result = "";
+  sectionList.forEach((section) => {
+    result += `<div>${section}</div>`;
   });
   return result;
-}
+};

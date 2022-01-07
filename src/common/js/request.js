@@ -17,7 +17,6 @@ export class Request {
 
     // 请求拦截
     axios.interceptors.request.use((config) => {
-      console.log("ajax request config:", config);
       return config;
     });
 
