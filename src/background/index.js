@@ -1,8 +1,5 @@
 import { getBookContent, getBookChapter, searchBook } from "./api";
-
-// search('神话版三国');
-// getChapter('txt/595/index.html');
-// getContent(595, '408974.html');
+import { getStorageBooks, setBookInStorage, setBooksSchedule } from "./storage";
 
 const api = {
   book: {
@@ -12,8 +9,17 @@ const api = {
   },
 };
 
+const storage = {
+  book: {
+    getStorageBooks,
+    setBookInStorage,
+    setBooksSchedule,
+  },
+};
+
 if (ENV === "development") {
   window.bg = {
     api,
+    storage,
   };
 }

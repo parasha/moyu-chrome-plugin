@@ -9,13 +9,15 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import BookItem from "../components/book-item.vue";
+import BookItem from "../components/search-book-item.vue";
 
 export default {
   components: { BookItem },
   setup() {
     const store = useStore();
-    const list = computed(() => store.state.searchBookList);
+    const list = computed(
+      () =>  [{ title: "术师手册" }]
+    );
 
     return {
       list,

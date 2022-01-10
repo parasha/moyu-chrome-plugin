@@ -1,6 +1,8 @@
 <template>
-  <Overlay :show="true" z-index='114514'>
-    <Loading />
+  <Overlay :show="loading" z-index='114514'>
+    <div class="overlay-container">
+      <Loading type="spinner" />
+    </div>
   </Overlay>
 </template>
 
@@ -21,4 +23,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.overlay-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

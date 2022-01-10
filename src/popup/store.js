@@ -12,10 +12,16 @@ const store = createStore({
     },
     searchBook(state, bookList) {
       state.searchBookList = bookList;
+      console.log(state.searchBookList);
     },
     selectBook(state, bookInfo) {
       state.currentBook = bookInfo;
+      console.log(state.currentBook);
     },
+    // 加进书架
+    addIntoStorage(state, bookInfo){
+      
+    }
   },
   actions: {
     async searchBook(ctx, searchKey) {
