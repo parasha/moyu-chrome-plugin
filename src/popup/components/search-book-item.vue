@@ -1,18 +1,18 @@
 <template>
   <div class="book-item">
-    <div class="left">
+    <div class="left noselect" @click="openBook">
       <p class="book-name ellipsis">{{ bookInfo.title }}</p>
       <div class="read-schedule ellipsis">阅读进度：{{ lasted }}</div>
     </div>
     <span v-if="isInStorage"></span>
-    <Icon name="add-o" class="right" size="20px" v-else @click="addStorage"/>
+    <Icon name="add-o" class="right noselect" size="20px" v-else @click="addStorage" />
   </div>
 </template>
 
 <script lang="ts">
 import { Icon } from "vant";
 import { computed, PropType } from "vue";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 import { BookInfo } from "@/definitions/book";
 
 export default {
@@ -34,13 +34,20 @@ export default {
       return schedule ? `${schedule.title}` : "未读";
     });
 
+    // 添加进书架
     const addStorage = () => {
-      store.dispatch('addIntoStorage', bookInfo);
-    }
+      store.dispatch("addIntoStorage", bookInfo);
+    };
+
+    // 打开书籍
+    const openBook = () => {
+      store.commit('selectBook', bookInfo);
+    };
 
     return {
       lasted,
       addStorage,
+      openBook
     };
   },
 };
@@ -76,5 +83,14 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>

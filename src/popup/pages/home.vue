@@ -29,7 +29,6 @@ export default {
       });
       return list;
     });
-    console.log("storageList:", storageBooks);
 
     return {
       storageBooks,

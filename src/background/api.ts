@@ -2,7 +2,6 @@ import cheerio from "cheerio";
 import { createRequest } from "@/common/js/request";
 import { BookInfo, ChapterInfo } from "@/definitions/book";
 
-console.log('domain:', BIQUGE_DOMAIN);
 // 这里主要处理请求
 const request = createRequest(BIQUGE_DOMAIN, {
   headers: { "Content-Type": "application/x-www-form-urlencoded" },

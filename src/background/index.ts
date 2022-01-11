@@ -13,10 +13,17 @@ const storage = {
   setBooksSchedule,
 };
 
+const bridge = {
+  openContainer: (book) => {
+    console.log('open container', book);
+  }
+}
+
 if (ENV === "development") {
   // @ts-ignore
   window.bg = {
     api,
     storage,
+    bridge,
   };
 }

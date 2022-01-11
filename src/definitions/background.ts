@@ -11,5 +11,8 @@ export interface Background {
     getStorageBooks: () => Promise<BookInfoMap>,
     setBookInStorage: (bookInfo: BookInfo) => Promise<BookInfoMap>,
     setBooksSchedule: (bookId: number, chapterInfo: ChapterInfo) => Promise<BookInfoMap>,
+  },
+  bridge: {
+    openContainer: (book: BookInfo) => void;
   }
 }

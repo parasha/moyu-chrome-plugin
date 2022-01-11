@@ -8,12 +8,10 @@ const BG: Background =ENV === "development" ? window.bg : chrome.extension.getBa
 const state: {
   loading: boolean;
   searchBookList: BookInfo[];
-  currentBook: BookInfo | null;
   storageBooks: BookInfoMap;
 } = {
   loading: false,
   searchBookList: [],
-  currentBook: null,
   storageBooks: {},
 };
 
@@ -28,11 +26,9 @@ const store = createStore({
     },
     searchBook(state, bookList: BookInfo[]) {
       state.searchBookList = bookList;
-      console.log(state.searchBookList);
     },
     selectBook(state, bookInfo: BookInfo) {
-      state.currentBook = bookInfo;
-      console.log(state.currentBook);
+      BG.bridge.openContainer(bookInfo);
     },
     refreshStorageBook(state, booksMap: BookInfoMap) {
       state.storageBooks = booksMap;
