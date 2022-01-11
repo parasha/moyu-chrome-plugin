@@ -5,31 +5,42 @@
       <div class="read-schedule ellipsis">阅读进度：{{ lasted }}</div>
     </div>
     <span v-if="isInStorage"></span>
-    <Icon name="add-o" class="right" size="20px" v-else />
+    <Icon name="add-o" class="right" size="20px" v-else @click="addStorage"/>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Icon } from "vant";
-import { computed } from "vue";
+import { computed, PropType } from "vue";
+import { useStore } from 'vuex';
+import { BookInfo } from "@/definitions/book";
+
 export default {
   components: { Icon },
   props: {
     bookInfo: {
-      type: Object,
+      type: Object as PropType<BookInfo>,
       required: true,
     },
     isInStorage: Boolean,
   },
   setup(props) {
     const { bookInfo } = props;
+
+    const store = useStore();
+
     const lasted = computed(() => {
-      const { chapterInfo } = bookInfo;
-      return chapterInfo ? `${chapterInfo.name}` : "未读";
+      const { schedule } = bookInfo;
+      return schedule ? `${schedule.title}` : "未读";
     });
+
+    const addStorage = () => {
+      store.dispatch('addIntoStorage', bookInfo);
+    }
 
     return {
       lasted,
+      addStorage,
     };
   },
 };

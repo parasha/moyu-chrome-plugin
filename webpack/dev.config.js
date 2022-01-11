@@ -15,7 +15,12 @@ const devWebpack = {
     port: 8011,
     open: true,
     proxy: {
-      "/biquge-api": "https://www.shuquge.com",
+      "/biquge-api": {
+        target: "https://www.shuquge.com",
+        secure: true,
+        changeOrigin: true,
+        pathRewrite: { "^/biquge-api": "" },
+      },
     },
   },
 
@@ -23,7 +28,7 @@ const devWebpack = {
     new webpack.DefinePlugin({
       // 定义环境和变量
       ENV: JSON.stringify("development"),
-      BIQUGE_DOMAIN: JSON.stringify("https://www.shuquge.com"),
+      BIQUGE_DOMAIN: JSON.stringify("/biquge-api"),
     }),
     new FriendlyErrorsWebpackPlugin(),
     new HtmlWebpackPlugin({

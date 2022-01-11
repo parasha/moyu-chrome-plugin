@@ -12,22 +12,18 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { Field, Button } from "vant";
+import { Field, Button, Notify } from "vant";
 
 export default {
   components: { Field, Button },
   setup() {
     const bookname = ref("");
 
-    const store = useStore();
     const router = useRouter();
 
     const handleKeyDown = async (e) => {
       if (e.keyCode === 13) {
-        store.commit("setLoading", true);
-        await store.dispatch("searchBook", bookname.value);
-        store.commit("setLoading", false);
-        router.push("/search");
+        router.push(`/search?key=${bookname.value}`);
       }
     };
 
