@@ -15,9 +15,9 @@ const storage = {
 
 const bridge = {
   openContainer: (book) => {
-    console.log('open container', book);
-  }
-}
+    console.log("open container", book);
+  },
+};
 
 if (ENV === "development") {
   // @ts-ignore

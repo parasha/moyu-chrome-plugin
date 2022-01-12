@@ -13,24 +13,26 @@ const devWebpack = {
     clean: true,
   },
   optimization: {
+    minimize: false,
     splitChunks: {
       cacheGroups: {
-        vendors: {  //拆分第三方库（通过npm|yarn安装的库）
+        vendors: {
+          //拆分第三方库（通过npm|yarn安装的库）
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'initial',
-          priority: -10
-      }
-      }
-    }
+          name: "vendors",
+          chunks: "initial",
+          priority: -10,
+        },
+      },
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
       // 定义环境和变量
-      ENV: 'production',
-      BIQUGE_DOMAIN: 'https://www.shuquge.com'
+      ENV: JSON.stringify("production"),
+      BIQUGE_DOMAIN: JSON.stringify("https://www.shuquge.com"),
     }),
-  ]
+  ],
 };
 
 module.exports = merge(baseWebpack, devWebpack);
