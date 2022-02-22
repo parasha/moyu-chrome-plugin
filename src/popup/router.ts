@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import store from './store';
+import useStore from './store';
 
 const routes: RouteRecordRaw[]  = [
   {
@@ -17,8 +17,13 @@ const router = createRouter({
   routes,
 });
 
+let store;
+
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch('getStorageBooks');
+  if(!store){
+    store = useStore();
+  }
+  await store.getStorageBooks();
   next();
 });
 export default router;

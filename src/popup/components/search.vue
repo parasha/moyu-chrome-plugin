@@ -10,7 +10,6 @@
 
 <script>
 import { ref } from "vue";
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { Field, Button, Notify } from "vant";
 

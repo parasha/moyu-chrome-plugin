@@ -4,6 +4,11 @@ declare module '*.vue' {
   export default _default
 }
 
+// window
+declare interface Window {
+  bg: any;
+}
+
 // 环境变量
 declare const ENV: string;
 declare const BIQUGE_DOMAIN: string;

@@ -5,15 +5,22 @@
       <div class="read-schedule ellipsis">阅读进度：{{ lasted }}</div>
     </div>
     <span v-if="isInStorage"></span>
-    <Icon name="add-o" class="right noselect" size="20px" v-else @click="addStorage" />
+    <Icon
+      name="add-o"
+      class="right noselect"
+      size="20px"
+      v-else
+      @click="addStorage"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Icon } from "vant";
 import { computed, PropType } from "vue";
-import { useStore } from "vuex";
+import useStore from "../store/index";
 import { BookInfo } from "@/definitions/book";
+import { BG } from "../constant";
 
 export default {
   components: { Icon },
@@ -36,18 +43,18 @@ export default {
 
     // 添加进书架
     const addStorage = () => {
-      store.dispatch("addIntoStorage", bookInfo);
+      store.addIntoStorage(bookInfo);
     };
 
     // 打开书籍
     const openBook = () => {
-      store.commit('selectBook', bookInfo);
+      BG.bridge.openContainer(bookInfo);
     };
 
     return {
       lasted,
       addStorage,
-      openBook
+      openBook,
     };
   },
 };
@@ -59,6 +66,7 @@ export default {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #f2f3f5;
+  cursor: pointer;
 
   .left {
     flex: 1;

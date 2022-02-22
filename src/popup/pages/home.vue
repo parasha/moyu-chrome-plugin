@@ -13,7 +13,8 @@
 
 <script lang="ts">
 import { computed } from "vue";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
+import useStore  from '../store/index';
 import BookItem from "../components/search-book-item.vue";
 
 export default {
@@ -22,7 +23,7 @@ export default {
     const store = useStore();
     const storageBooks = computed(() => {
       const list = [];
-      const books = store.state.storageBooks;
+      const books = store.storageBooks;
       const keys = Object.keys(books);
       keys.forEach((key) => {
         list.push(books[key]);
