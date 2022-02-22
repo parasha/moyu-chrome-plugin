@@ -3,7 +3,7 @@ import { BookInfo, ChapterInfo, BookInfoMap } from "@/definitions/book";
 
 
 export const getStorageBooks = async () => {
-  return get<BookInfoMap>("books-in-storage");
+  return await get<BookInfoMap>("books-in-storage") || {};
 };
 
 export const setBookInStorage = async (bookInfo: BookInfo) => {
