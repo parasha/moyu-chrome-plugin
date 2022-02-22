@@ -7,6 +7,7 @@ declare module '*.vue' {
 // window
 declare interface Window {
   bg: any;
+  chromeEvent: any;
 }
 
 // 环境变量
