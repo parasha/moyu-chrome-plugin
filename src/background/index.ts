@@ -1,22 +1,22 @@
 import { getBookContent, getBookChapter, searchBook } from "./api";
 import { getStorageBooks, setBookInStorage, setBooksSchedule } from "./storage";
+import { openCurrentContentPage } from './contentHandle';
+import {Api, Storage, Bridge} from '@/definitions/background';
 
-const api = {
+const api: Api = {
   searchBook,
   getBookChapter,
   getBookContent,
 };
 
-const storage = {
+const storage: Storage = {
   getStorageBooks,
   setBookInStorage,
   setBooksSchedule,
 };
 
-const bridge = {
-  openContainer: (book) => {
-    console.log("open container", book);
-  },
+const bridge: Bridge = {
+  openContainer: openCurrentContentPage,
 };
 
 if (ENV === "development") {

@@ -61,7 +61,7 @@ export const getBookChapter = async (bookId: number) => {
     }
   });
   chapterList = chapterList.splice(firstChapterIndex);
-  return chapterList;
+  return { chapterList };
 };
 
 export const getBookContent = async (bookId: number, chapterId: number) => {

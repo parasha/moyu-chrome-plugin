@@ -27,12 +27,9 @@ const useStore = defineStore("main", {
       const bookList = await searchBook(searchKey);
       this.searchBookList = bookList;
     },
-    // 选择书，获取列表
+    // 选择书
     async selectBook(bookInfo: BookInfo) {
-      const { getBookChapter } = BG.api;
-      const { id } = bookInfo;
-      const chapters = await getBookChapter(id);
-      bookInfo.chapters = chapters;
+      // 要获取列表吗？
       BG.bridge.openContainer(bookInfo);
     },
     // 获取全部书架
