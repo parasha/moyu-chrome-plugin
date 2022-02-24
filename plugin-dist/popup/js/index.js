@@ -1,18 +1,34 @@
 let button = document.getElementById("button");
 
-const bg = chrome.extension.getBackgroundPage();
-
-// 使用长连接
-const port = chrome.extension.connect({
-  name: "popup",
-});
-
-button.onclick = () => {
-  // 使用postMs 发送信息
-  port.postMessage("给 background 传递信息~");
+// 根据id创建长链接
+function createConnectChannel (tabId) {
+  if(!tabId){
+    return;
+  }
+  // 创建链接
+  var port = chrome.tabs.connect(tabId, { name: 'test-connect' });
+  console.log('创建链接:', port);
+  // 发送消息
+  port.postMessage({ question: '你是谁啊？' });
+  console.log('发送消息');
+  // 监听消息
+  port.onMessage.addListener(function (msg) {
+    console.log('收到消息:', msg);
+    // port.disconnect();
+  });
 };
 
-// 接收信息
-port.onMessage.addListener((msg) => {
-  console.log("接收的信息：", msg);
-});
+
+// 获取当前选项卡ID
+function getCurrentTabId(callback) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    console.log('获取tab:', tabs);
+    if (callback) callback(tabs.length ? tabs[0].id : null);
+  });
+}
+
+
+
+button.onclick = function () {
+  getCurrentTabId(createConnectChannel)
+};

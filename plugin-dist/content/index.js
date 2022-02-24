@@ -1,18 +1,12 @@
-console.log('content sctipt run');
+// 监听长连接
+console.log('content script run!');
 
-// get popup2content info
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(request.info)
-  sendResponse('我收到了，background~')
+chrome.runtime.onConnect.addListener(function (port) {
+  console.log('port:', port);
+  if (port.name == 'test-connect') {
+    port.onMessage.addListener(function (msg) {
+      console.log('收到长连接消息：', msg);
+      if (msg.question == '你是谁啊？') port.postMessage({ answer: '我是你爸！' });
+    });
+  }
 });
-
-// Chrome提供的大部分API是不支持在content_scripts中运行
-// sendMessage onMessage 是可以使用
-// run!
-chrome.runtime.sendMessage({
-  info: "我是 content.js"
-}, res => {
-  // 答复
-  // alert(res)
-  console.log(res);
-})
