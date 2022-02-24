@@ -8,7 +8,6 @@ const request = createRequest(BIQUGE_DOMAIN, {
 });
 
 const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
-
 /**
  * 搜书
  * @param {string} bookname
@@ -20,12 +19,15 @@ export const searchBook = async (bookname: string) => {
   const $ = cheerio.load(res);
   const result: BookInfo[] = [];
   $(".bookbox .bookinfo").each((index, bookDom) => {
-    const dom = $(bookDom).find(".bookname a");
-    const title = dom.text();
-    const url = dom.attr().href;
+    const tagA = $(bookDom).find(".bookname a");
+    const title = tagA.text();
+    const url = tagA.attr().href;
+    const updateDom = $(bookDom).find("a");
+    const newChapter = updateDom.text();
     result.push({
       title,
       id: Number(url.match(bookIdReg)[1]),
+      newChapter,
     });
   });
   return result;

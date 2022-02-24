@@ -23,6 +23,7 @@ router.beforeEach(async (to, from, next) => {
   if(!store){
     store = useStore();
   }
+  // 这个其实没必要，看看以后换个地方
   await store.getStorageBooks();
   next();
 });

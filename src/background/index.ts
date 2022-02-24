@@ -1,6 +1,6 @@
 import { getBookContent, getBookChapter, searchBook } from "./api";
 import { getStorageBooks, setBookInStorage, setBooksSchedule } from "./storage";
-import { openCurrentContentPage } from './contentHandle';
+import { openContentInsertWindow } from './content-handle';
 import {Api, Storage, Bridge} from '@/definitions/background';
 
 const api: Api = {
@@ -16,7 +16,7 @@ const storage: Storage = {
 };
 
 const bridge: Bridge = {
-  openContainer: openCurrentContentPage,
+  openContainer: openContentInsertWindow,
 };
 
 if (ENV === "development") {
