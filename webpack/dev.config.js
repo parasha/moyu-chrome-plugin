@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devWebpack = {
   mode: "development",
   entry: {
-    fakeMessage: path.resolve(__dirname, "../src/common/js/fake-event.ts"),
+    dev: path.resolve(__dirname, "../src/dev.ts"),
   },
   devServer: {
     historyApiFallback: true,

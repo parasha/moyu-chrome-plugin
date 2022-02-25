@@ -4,11 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css到�
 const { VueLoaderPlugin } = require("vue-loader/dist/index");
 
 module.exports = {
-  entry: {
-    background: path.resolve(__dirname, "../src/background/index.ts"),
-    content: path.resolve(__dirname, "../src/content/main.ts"),
-    popup: path.resolve(__dirname, "../src/popup/main.ts"),
-  },
+  
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "../src"),

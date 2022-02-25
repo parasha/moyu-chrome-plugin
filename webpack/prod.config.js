@@ -6,6 +6,11 @@ const baseWebpack = require("./default.config");
 
 const devWebpack = {
   mode: "production",
+  entry: {
+    background: path.resolve(__dirname, "../src/background/index.ts"),
+    content: path.resolve(__dirname, "../src/content/main.ts"),
+    popup: path.resolve(__dirname, "../src/popup/main.ts"),
+  },
   output: {
     filename: "js/[name].[contenthash:8].js",
     path: path.resolve(__dirname, "../dist"),

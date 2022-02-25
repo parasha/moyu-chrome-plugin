@@ -1,36 +1,32 @@
 import { ChapterInfo, BookInfo } from '@/definitions/book';
 import { BookDetail } from '@/definitions/content';
+import { initMessageChannel, ChannelType } from '@/common/js/message';
 import { getStorageBooks } from './storage';
 import { getBookChapter, getBookContent } from './api';
 
+const initChannelBetweenContentWithBackground = async () => {
+  // let bookBaseInfo = {};
 
-const initChannelBetweenContentWithBackground = () => {
-  console.log('注册 message 通信');
+  const port = await initMessageChannel(ChannelType.Background);
 
-  let bookBaseInfo = {};
+  // 事件注册
+  port.addListener(({ type, value }) => {
+    switch (type) {
+      default:
+        console.log('background listener:', type, value);
+    }
+  });
 
-  if (ENV === "development") {
-    // 
-    window.chromeEvent.on('get-book-base-info', async (bookId: Number) => {
-      // 
-    })
-  }else{
-
-  }
+  return port;
 }
 
 
 // 打开注入到页面内的弹窗
-export const openContentInsertWindow = (bookInfo: BookInfo) => {
+export const openContentInsertWindow = async (bookInfo: BookInfo) => {
   const { id: bookId, title: bookTitle } = bookInfo;
 
-  initChannelBetweenContentWithBackground();
-
-  if (ENV === "development") {
-    window.chromeEvent.emit('content-render', { bookId, bookTitle });
-  }else{
-
-  }
+  const port = await initChannelBetweenContentWithBackground();
+  port.postMessage({ type: 'render', value: { bookId, bookTitle } });
 }
 
 
