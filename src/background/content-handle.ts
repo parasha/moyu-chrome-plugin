@@ -10,8 +10,13 @@ const initChannelBetweenContentWithBackground = async () => {
   const port = await initMessageChannel(ChannelType.Background);
 
   // 事件注册
-  port.addListener(({ type, value }) => {
+  port.addListener(async ({ type, value }) => {
     switch (type) {
+      case 'init-book':
+        const { bookId, bookTitle } = value;
+        const chapterInfo = await getBookChapter(bookId);
+        port.postMessage({ type: 'base-book-info', value: { bookId, bookTitle, ...chapterInfo } })
+        break;
       default:
         console.log('background listener:', type, value);
     }

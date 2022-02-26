@@ -9,7 +9,7 @@ import App from './App.vue';
 const initApp = (() => {
     let cache = null;
 
-    return ( bookDetail: BookDetail, type: PageType) => {
+    return (bookDetail: BookDetail, type: PageType) => {
         if (cache) {
             console.log('重复打开');
             return;
@@ -35,7 +35,11 @@ const initChannelBetweenContentWithBackground = async () => {
         switch (type) {
             case 'render':
                 // const {  bookId, bookTitle } = value;
-                initApp( value, type);
+                port.postMessage({ type: 'init-book', value })
+                initApp(value, type);
+                break;
+            case 'base-book-info':
+                console.log('base-book-info', value);
                 break;
             default:
                 console.log('content listener:', type, value);
