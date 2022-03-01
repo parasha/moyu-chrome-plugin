@@ -9,10 +9,8 @@ class DevMessage {
     }
 
     addListener(callback: (params: any) => void) {
+        // dev 模式下会有事件重复注册问题
         // 本身就是一个开发调试模拟的，对付对付就行
-        if(this.list.length >= 2){
-            return;
-        }
         this.list.push(callback);
     }
 

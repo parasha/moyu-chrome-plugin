@@ -3,7 +3,7 @@
     <div class="window-header">
       <span class="close">x</span>
     </div>
-    <ContentPage v-if="pageType === PageType.Content" :bookInfo="bookInfo"/>
+    <ContentPage v-if="pageType === PageType.Content" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import ChaptersListPage from "./pages/chapters.vue";
 export default {
   components: { ContentPage, ChaptersListPage },
   props: {
-    bookInfo: {
+    bookDetail: {
       type: Object,
       required: true,
     },
@@ -25,14 +25,35 @@ export default {
       type: String,
       default: PageType.Content,
     },
+    port: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props) {
-    const pageType = ref("content");
-    console.log("content app:", props, props.bookInfo);
+    console.log("content app:", props);
+    const { port, bookDetail } = props;
+
+    // 注册 content-background 事件总线
+    const initMessageChannel = () => {
+      // 事件注册
+      console.log('事件注册：', port);
+      port.addListener(({ type, value }) => {
+        switch (type) {
+          case "base-book-info":
+            console.log("base-book-info", value);
+            break;
+          default:
+            console.log("vue listener:", type, value);
+        }
+      });
+      port.postMessage({ type: "init-book", value: bookDetail });
+    };
+
+    initMessageChannel();
 
     return {
       PageType,
-      pageType,
     };
   },
 };
@@ -52,7 +73,7 @@ export default {
     height: 20px;
     background-color: rgb(254, 233, 48);
 
-    .close{
+    .close {
       cursor: pointer;
     }
   }

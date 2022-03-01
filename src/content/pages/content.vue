@@ -1,6 +1,6 @@
 <template>
   <div class="content-container">
-    <div class="content" v-html="bookInfo.content"></div>
+    <div class="content" v-html="bookDetail.content"></div>
     <div class="content-handle">
       <div class="btn disabled">上一章</div>
       <div class="btn">返回目录</div>
@@ -11,12 +11,6 @@
 
 <script>
 export default {
-  props: {
-    bookInfo: {
-      type: Object,
-      required: true,
-    },
-  },
   setup() {},
 };
 </script>

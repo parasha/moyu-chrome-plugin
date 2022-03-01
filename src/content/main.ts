@@ -9,7 +9,7 @@ import App from './App.vue';
 const initApp = (() => {
     let cache = null;
 
-    return (bookDetail: BookDetail, type: PageType) => {
+    return (bookDetail: BookDetail, type: PageType, port: any) => {
         if (cache) {
             console.log('重复打开');
             return;
@@ -19,30 +19,27 @@ const initApp = (() => {
         AppDom.setAttribute('id', 'moyu-chrome-plugin-insert-pop');
         document.body.appendChild(AppDom);
 
-        const app = createApp(App, { bookInfo: bookDetail, pageType: type });
+        const app = createApp(App, { bookDetail, pageType: type, port });
         app.mount(AppDom);
 
         cache = true;
+
+        return app;
     }
 })();
 
 // 注册 Message Channel
 const initChannelBetweenContentWithBackground = async () => {
     const port = await initMessageChannel(ChannelType.Content);
-
+    let app;
     // 事件注册
     port.addListener(({ type, value }) => {
         switch (type) {
             case 'render':
-                // const {  bookId, bookTitle } = value;
-                port.postMessage({ type: 'init-book', value })
-                initApp(value, type);
-                break;
-            case 'base-book-info':
-                console.log('base-book-info', value);
+                app = initApp(value, type, port);
                 break;
             default:
-                console.log('content listener:', type, value);
+                console.log("vue listener:", type, value);
         }
     });
 }
