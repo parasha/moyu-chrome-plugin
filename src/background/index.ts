@@ -1,7 +1,7 @@
 import { getBookContent, getBookChapter, searchBook } from "./api";
 import { getStorageBooks, setBookInStorage, setBooksSchedule } from "./storage";
 import { openContentInsertWindow } from './content-handle';
-import {Api, Storage, Bridge} from '@/definitions/background';
+import { Api, Storage, Bridge } from '@/definitions/background';
 
 const api: Api = {
   searchBook,

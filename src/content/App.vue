@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { PageType } from "@/definitions/content";
+import useStore from "./store";
+import { computed, provide } from "vue";
 
 import ContentPage from "./pages/content.vue";
 import ChaptersListPage from "./pages/chapters.vue";
@@ -17,13 +18,10 @@ import ChaptersListPage from "./pages/chapters.vue";
 export default {
   components: { ContentPage, ChaptersListPage },
   props: {
-    bookDetail: {
+    initData: {
+      // BookDetail: bookId & bookTitle
       type: Object,
       required: true,
-    },
-    pageType: {
-      type: String,
-      default: PageType.Content,
     },
     port: {
       type: Object,
@@ -31,28 +29,31 @@ export default {
     },
   },
   setup(props) {
-    console.log("content app:", props);
-    const { port, bookDetail } = props;
+    const { port, initData } = props;
 
+    // store 初始化
+    const store = useStore();
+    const pageType = computed(() => store.pageType);
+    store.resetBookDetail(initData);
+    
     // 注册 content-background 事件总线
     const initMessageChannel = () => {
       // 事件注册
-      console.log('事件注册：', port);
       port.addListener(({ type, value }) => {
         switch (type) {
           case "base-book-info":
-            console.log("base-book-info", value);
+            store.updateBookDetail(value);
             break;
-          default:
-            console.log("vue listener:", type, value);
         }
       });
-      port.postMessage({ type: "init-book", value: bookDetail });
+      port.postMessage({ type: "init-book", value: initData });
     };
 
     initMessageChannel();
+    provide('port', port);
 
     return {
+      pageType,
       PageType,
     };
   },

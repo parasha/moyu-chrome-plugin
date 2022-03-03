@@ -10,8 +10,20 @@
 </template>
 
 <script>
+import { computed, inject } from "vue";
+import useStore from "../store";
+
 export default {
-  setup() {},
+  setup() {
+    const port = inject('port');
+
+    const store = useStore();
+    const bookDetail = computed(() => store.bookDetail);
+
+    return {
+      bookDetail,
+    };
+  },
 };
 </script>
 
@@ -32,14 +44,14 @@ export default {
     padding-top: 5px;
     border-top: 1px solid #e5e5e5;
 
-    .btn{
-        cursor: pointer;
-        margin: 0 10px;
+    .btn {
+      cursor: pointer;
+      margin: 0 10px;
     }
 
-    .disabled{
-        color: #b3c4d1;
-        cursor: no-drop;
+    .disabled {
+      color: #b3c4d1;
+      cursor: no-drop;
     }
   }
 }

@@ -1,6 +1,7 @@
 import '@/common/less/reset.less';
 
 import { createApp } from "vue";
+import { createPinia }from 'pinia';
 import { PageType, BookDetail } from '@/definitions/content';
 import { initMessageChannel, ChannelType } from '@/common/js/message';
 import App from './App.vue';
@@ -9,7 +10,7 @@ import App from './App.vue';
 const initApp = (() => {
     let cache = null;
 
-    return (bookDetail: BookDetail, type: PageType, port: any) => {
+    return (initData: BookDetail, port: any) => {
         if (cache) {
             console.log('重复打开');
             return;
@@ -19,7 +20,8 @@ const initApp = (() => {
         AppDom.setAttribute('id', 'moyu-chrome-plugin-insert-pop');
         document.body.appendChild(AppDom);
 
-        const app = createApp(App, { bookDetail, pageType: type, port });
+        const app = createApp(App, { initData, port });
+        app.use(createPinia());
         app.mount(AppDom);
 
         cache = true;
@@ -36,15 +38,11 @@ const initChannelBetweenContentWithBackground = async () => {
     port.addListener(({ type, value }) => {
         switch (type) {
             case 'render':
-                app = initApp(value, type, port);
+                app = initApp(value, port);
                 break;
-            default:
-                console.log("vue listener:", type, value);
         }
     });
 }
-
-
 
 /**
  * initContent 要做两件事：

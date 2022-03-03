@@ -62,8 +62,10 @@ export const getBookChapter = async (bookId: number) => {
       return index;
     }
   });
+  // 最新章节
+  const newChapterList = chapterList.splice(0, firstChapterIndex);
   chapterList = chapterList.splice(firstChapterIndex);
-  return { chapterList };
+  return { chapterList, newChapterList };
 };
 
 export const getBookContent = async (bookId: number, chapterId: number) => {

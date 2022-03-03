@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const devWebpack = {
   mode: "development",
+  devtool: "source-map",
   entry: {
     dev: path.resolve(__dirname, "../src/dev.ts"),
   },

@@ -19,6 +19,7 @@ const devWebpack = {
   },
   optimization: {
     minimize: false,
+    runtimeChunk: "single",
     splitChunks: {
       cacheGroups: {
         vendors: {
