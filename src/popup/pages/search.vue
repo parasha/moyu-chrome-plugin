@@ -1,14 +1,19 @@
 <template>
   <div class="book-list">
     <template v-if="list.length > 0">
-      <BookItem v-for="item of list" :key="item.id" :bookInfo="item" :isInStorage="!!storageList[item.id]"/>
+      <BookItem
+        v-for="item of list"
+        :key="item.id"
+        :bookInfo="item"
+        :isInStorage="!!storageList[item.bookId]"
+      />
     </template>
   </div>
 </template>
 
 <script>
 import { computed } from "vue";
-import useStore from '../store/index';
+import useStore from "../store/index";
 import { useRoute } from "vue-router";
 import { Notify } from "vant";
 import BookItem from "../components/search-book-item.vue";
@@ -27,7 +32,6 @@ export default {
       if (key) {
         store.loading = true;
         try {
-          // await store.dispatch("searchBook", key);
           await store.searchBook(key);
         } catch (error) {
           Notify({

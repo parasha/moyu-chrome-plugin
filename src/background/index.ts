@@ -1,5 +1,5 @@
 import { getBookContent, getBookChapter, searchBook } from "./api";
-import { getStorageBooks, setBookInStorage, setBooksSchedule } from "./storage";
+import { getStorageBooks, setBookInStorage, setBooksSchedule, getBooksSchedule } from "./storage";
 import { openContentInsertWindow } from './content-handle';
 import { Api, Storage, Bridge } from '@/definitions/background';
 
@@ -13,6 +13,7 @@ const storage: Storage = {
   getStorageBooks,
   setBookInStorage,
   setBooksSchedule,
+  getBooksSchedule,
 };
 
 const bridge: Bridge = {

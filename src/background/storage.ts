@@ -1,5 +1,5 @@
 import { set, get, remove, clear } from "@/common/js/storage";
-import { BookDetail, ChapterInfo, BookInfoMap } from "@/definitions/book";
+import { BookDetail, ChapterInfo, BookInfoMap, BookScheduleMap } from "@/definitions/book";
 
 
 export const getStorageBooks = async () => {
@@ -15,15 +15,14 @@ export const setBookInStorage = async (bookInfo: BookDetail) => {
 };
 
 
-export const getBooksReadSchedule = async () => {
-  return await get<BookInfoMap>("books-read-schedule") || {};
+export const getBooksSchedule = async () => {
+  return await get<BookScheduleMap>("books-read-schedule") || {};
 }
 
 // 保存当前书籍的阅读进度
 export const setBooksSchedule = async (bookId: number, chapterInfo: ChapterInfo) => {
-  const booksMap = await getStorageBooks() || {};
-  const book = booksMap[bookId];
-  book.schedule = chapterInfo;
-  await set("books-read-schedule", booksMap);
-  return booksMap;
+  const bookScheduleMap = await getBooksSchedule() || {};
+  const newbookScheduleMap = {...bookScheduleMap, [bookId]: chapterInfo}
+  await set("books-read-schedule", newbookScheduleMap);
+  return newbookScheduleMap;
 };

@@ -5,6 +5,7 @@
       <div class="read-schedule ellipsis">阅读进度：{{ lasted }}</div>
       <div class="read-schedule ellipsis">最新章节：{{ bookInfo.newChapter }}</div>
     </div>
+    <!-- TODO: 这里以后做一个移出书架功能 -->
     <span v-if="isInStorage"></span>
     <Icon
       name="add-o"

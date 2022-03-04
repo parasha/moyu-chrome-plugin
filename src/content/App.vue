@@ -3,14 +3,14 @@
     <div class="window-header">
       <span class="close">x</span>
     </div>
-    <ContentPage v-if="pageType === PageType.Content" />
+    <ContentPage v-if="pageType === PageType.Content" ref="content" />
   </div>
 </template>
 
 <script lang="ts">
 import { PageType, BookDetail } from "@/definitions/book";
 import useStore from "./store";
-import { PropType, computed, provide } from "vue";
+import { PropType, computed, provide, ref } from "vue";
 
 import ContentPage from "./pages/content.vue";
 import ChaptersListPage from "./pages/chapters.vue";
@@ -19,7 +19,6 @@ export default {
   components: { ContentPage, ChaptersListPage },
   props: {
     initData: {
-      // BookDetail
       type: Object as PropType<BookDetail>,
       required: true,
     },
@@ -36,6 +35,15 @@ export default {
     const pageType = computed(() => store.pageType);
     store.resetBookDetail(initData);
 
+    // 获取 dom
+    const content = ref(null);
+    // 阅读区复位
+    const resetContentDomScroll = () => {
+      try {
+        content.value.$el.scrollTo(0, 0);
+      } catch {}
+    };
+
     // 注册 content-background 消息事件
     const initMessageChannel = () => {
       // 事件注册
@@ -43,9 +51,11 @@ export default {
         switch (type) {
           case "reset-book-info":
             store.resetBookDetail(value);
+            resetContentDomScroll();
             break;
           case "update-book-info":
             store.updateBookDetail(value);
+            resetContentDomScroll();
             break;
         }
       });
@@ -56,6 +66,7 @@ export default {
     return {
       pageType,
       PageType,
+      content,
     };
   },
 };

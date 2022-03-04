@@ -22,6 +22,7 @@ export interface BookDetail {
   preChapterId?: number,
   nextChapterId?: number,
   // 阅读进度
+  // 这里的 schedule 不准，阅读进度以独立维护的 BookSchdule 为准
   schedule?: ChapterInfo,
 }
 
@@ -32,4 +33,8 @@ export interface BookInfoMap {
 export interface ChapterInfo {
   title: string; // 章节名
   id: number;
+}
+
+export interface BookScheduleMap {
+  [id: string | number]: ChapterInfo
 }

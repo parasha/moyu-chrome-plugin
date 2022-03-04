@@ -1,14 +1,23 @@
 import { ChapterInfo, BookDetail } from '@/definitions/book';
 import { initMessageChannel, ChannelType } from '@/common/js/message';
-import { getStorageBooks } from './storage';
+import { setBooksSchedule, getBooksSchedule } from './storage';
 import { getBookChapter, getBookContent } from './api';
 
 const getDefaultContentOfBook = async (bookId: number, chapterList: Array<ChapterInfo>) => {
-  // 阅读进度功能还未实装，先不管
-  const { id: chapterId, title: chapterTitle } = chapterList[0];
-  const content = await getBookContent(bookId, chapterId);
+  const bookScheduleMap = await getBooksSchedule();
+  const schedule = bookScheduleMap[bookId];
 
-  return { chapterId, chapterTitle, content };
+  let content;
+  if (schedule) {
+    const { id: chapterId, title: chapterTitle } = schedule;
+    content = await getBookContent(bookId, chapterId);
+    return { chapterId, chapterTitle, content };
+  } else {
+    // 阅读进度功能还未实装，先不管
+    const { id: chapterId, title: chapterTitle } = chapterList[0];
+    content = await getBookContent(bookId, chapterId);
+    return { chapterId, chapterTitle, content };
+  }
 }
 
 // message 初始化
@@ -24,7 +33,8 @@ const initChannelBetweenContentWithBackground = async () => {
         const { bookId, chapterId, chapterTitle } = value;
         const content = await getBookContent(bookId, chapterId);
         port.postMessage({ type: 'update-book-info', value: { bookId, chapterId, chapterTitle, content } });
-        // TODO: save localStorage
+        // 保存本地阅读进度
+        setBooksSchedule(bookId, { id: chapterId, title: chapterTitle });
         break;
     }
   });
