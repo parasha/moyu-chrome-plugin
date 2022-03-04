@@ -1,15 +1,15 @@
 import { set, get, remove, clear } from "@/common/js/storage";
-import { BookInfo, ChapterInfo, BookInfoMap } from "@/definitions/book";
+import { BookDetail, ChapterInfo, BookInfoMap } from "@/definitions/book";
 
 
 export const getStorageBooks = async () => {
   return await get<BookInfoMap>("books-in-storage") || {};
 };
 
-export const setBookInStorage = async (bookInfo: BookInfo) => {
+export const setBookInStorage = async (bookInfo: BookDetail) => {
   const booksMap = await getStorageBooks() || {};
-  const { id } = bookInfo ;
-  const newMap = { ...booksMap, [id]: bookInfo }
+  const { bookId } = bookInfo ;
+  const newMap = { ...booksMap, [bookId]: bookInfo }
   await set("books-in-storage", newMap);
   return newMap;
 };

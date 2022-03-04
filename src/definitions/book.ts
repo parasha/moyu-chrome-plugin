@@ -1,18 +1,32 @@
-export interface BookInfo {
-  title: string; // 书名
-  id: number;
-  newChapter?: string; // 最新章节名
-  chapters?: ChapterInfo[]; // 章节列表
-  // 待开发
-  schedule?: {
-    // 阅读进度
-    title: string; // 标题
-    id: number;
-  };
+
+export enum PageType {
+  Content = 'content',
+  Chapters = 'chapters'
+}
+
+export interface BookDetail {
+  // 书
+  bookId: number,
+  bookTitle: string,
+  // 章节列表
+  chapterList?: Array<ChapterInfo>,
+  newChapterList?: Array<ChapterInfo>,
+  // 最新章节名
+  newChapter?: string, 
+  // 章节
+  chapterId?: number,
+  chapterTitle?: string,
+  // 正文
+  content?: string,
+  // 前一章，后一章
+  preChapterId?: number,
+  nextChapterId?: number,
+  // 阅读进度
+  schedule?: ChapterInfo,
 }
 
 export interface BookInfoMap {
-  [id: string | number]: BookInfo;
+  [id: string | number]: BookDetail;
 }
 
 export interface ChapterInfo {

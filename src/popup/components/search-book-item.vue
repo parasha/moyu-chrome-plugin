@@ -1,8 +1,9 @@
 <template>
   <div class="book-item">
     <div class="left noselect" @click="openBook">
-      <p class="book-name ellipsis">{{ bookInfo.title }}</p>
+      <p class="book-name ellipsis">{{ bookInfo.bookTitle }}</p>
       <div class="read-schedule ellipsis">阅读进度：{{ lasted }}</div>
+      <div class="read-schedule ellipsis">最新章节：{{ bookInfo.newChapter }}</div>
     </div>
     <span v-if="isInStorage"></span>
     <Icon
@@ -19,14 +20,14 @@
 import { Icon } from "vant";
 import { computed, PropType } from "vue";
 import useStore from "../store/index";
-import { BookInfo } from "@/definitions/book";
+import { BookDetail } from "@/definitions/book";
 import { BG } from "../constant";
 
 export default {
   components: { Icon },
   props: {
     bookInfo: {
-      type: Object as PropType<BookInfo>,
+      type: Object as PropType<BookDetail>,
       required: true,
     },
     isInStorage: Boolean,

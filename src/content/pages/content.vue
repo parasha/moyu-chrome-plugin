@@ -19,9 +19,21 @@ export default {
 
     const store = useStore();
     const bookDetail = computed(() => store.bookDetail);
-
+    // 上一章和下一章
+    const chapters = computed(() => {
+      const {chapterList, chapterId} = store.bookDetail;
+      if(!chapterId || !chapterList || chapterList.length === 0){
+        return []
+      }
+      const index = chapterList.findIndex(item => item.id === chapterId);
+      const lastChapter = index - 1 < 0 ? null : chapterList[index - 1], nextChapter = index + 1 >= chapterList.length ? null : chapterList[index + 1];
+      console.log(index, chapterList.length, lastChapter, nextChapter);
+      return [lastChapter, nextChapter];
+    })
+    console.log('book detail:', bookDetail);
     return {
       bookDetail,
+      chapters,
     };
   },
 };

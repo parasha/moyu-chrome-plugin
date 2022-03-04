@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { PageType } from "@/definitions/content";
+import { PageType } from "@/definitions/book";
 import useStore from "./store";
 import { computed, provide } from "vue";
 

@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import { createRequest } from "@/common/js/request";
-import { BookInfo, ChapterInfo } from "@/definitions/book";
+import { BookDetail, ChapterInfo } from "@/definitions/book";
 
 // 这里主要处理请求
 const request = createRequest(BIQUGE_DOMAIN, {
@@ -17,16 +17,16 @@ export const searchBook = async (bookname: string) => {
     `/search.php?searchkey=${encodeURIComponent(bookname)}`
   );
   const $ = cheerio.load(res);
-  const result: BookInfo[] = [];
+  const result: BookDetail[] = [];
   $(".bookbox .bookinfo").each((index, bookDom) => {
     const tagA = $(bookDom).find(".bookname a");
-    const title = tagA.text();
+    const bookTitle = tagA.text();
     const url = tagA.attr().href;
-    const updateDom = $(bookDom).find("a");
+    const updateDom = $(bookDom).find(".update a");
     const newChapter = updateDom.text();
     result.push({
-      title,
-      id: Number(url.match(bookIdReg)[1]),
+      bookTitle,
+      bookId: Number(url.match(bookIdReg)[1]),
       newChapter,
     });
   });
@@ -63,7 +63,7 @@ export const getBookChapter = async (bookId: number) => {
     }
   });
   // 最新章节
-  const newChapterList = chapterList.splice(0, firstChapterIndex);
+  const newChapterList = chapterList.slice(0, firstChapterIndex);
   chapterList = chapterList.splice(firstChapterIndex);
   return { chapterList, newChapterList };
 };

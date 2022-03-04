@@ -2,7 +2,7 @@ import '@/common/less/reset.less';
 
 import { createApp } from "vue";
 import { createPinia }from 'pinia';
-import { PageType, BookDetail } from '@/definitions/content';
+import { PageType, BookDetail } from '@/definitions/book';
 import { initMessageChannel, ChannelType } from '@/common/js/message';
 import App from './App.vue';
 

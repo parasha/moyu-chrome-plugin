@@ -1,5 +1,4 @@
-import { ChapterInfo, BookInfo } from '@/definitions/book';
-import { BookDetail } from '@/definitions/content';
+import { ChapterInfo, BookDetail } from '@/definitions/book';
 import { initMessageChannel, ChannelType } from '@/common/js/message';
 import { getStorageBooks } from './storage';
 import { getBookChapter, getBookContent } from './api';
@@ -36,8 +35,8 @@ const initChannelBetweenContentWithBackground = async () => {
 
 
 // 打开注入到页面内的弹窗
-export const openContentInsertWindow = async (bookInfo: BookInfo) => {
-  const { id: bookId, title: bookTitle } = bookInfo;
+export const openContentInsertWindow = async (bookInfo: BookDetail) => {
+  const {  bookId, bookTitle } = bookInfo;
 
   const port = await initChannelBetweenContentWithBackground();
   port.postMessage({ type: 'render', value: { bookId, bookTitle } });

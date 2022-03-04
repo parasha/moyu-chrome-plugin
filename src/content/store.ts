@@ -1,4 +1,4 @@
-import { PageType, BookDetail } from '@/definitions/content';
+import { PageType, BookDetail } from '@/definitions/book';
 import { defineStore } from 'pinia';
 
 
