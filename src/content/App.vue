@@ -7,10 +7,10 @@
   </div>
 </template>
 
-<script>
-import { PageType } from "@/definitions/book";
+<script lang="ts">
+import { PageType, BookDetail } from "@/definitions/book";
 import useStore from "./store";
-import { computed, provide } from "vue";
+import { PropType, computed, provide } from "vue";
 
 import ContentPage from "./pages/content.vue";
 import ChaptersListPage from "./pages/chapters.vue";
@@ -19,8 +19,8 @@ export default {
   components: { ContentPage, ChaptersListPage },
   props: {
     initData: {
-      // BookDetail: bookId & bookTitle
-      type: Object,
+      // BookDetail
+      type: Object as PropType<BookDetail>,
       required: true,
     },
     port: {
@@ -35,22 +35,23 @@ export default {
     const store = useStore();
     const pageType = computed(() => store.pageType);
     store.resetBookDetail(initData);
-    
-    // 注册 content-background 事件总线
+
+    // 注册 content-background 消息事件
     const initMessageChannel = () => {
       // 事件注册
       port.addListener(({ type, value }) => {
         switch (type) {
-          case "base-book-info":
+          case "reset-book-info":
+            store.resetBookDetail(value);
+            break;
+          case "update-book-info":
             store.updateBookDetail(value);
             break;
         }
       });
-      port.postMessage({ type: "init-book", value: initData });
     };
-
     initMessageChannel();
-    provide('port', port);
+    provide("port", port);
 
     return {
       pageType,

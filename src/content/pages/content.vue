@@ -2,9 +2,21 @@
   <div class="content-container">
     <div class="content" v-html="bookDetail.content"></div>
     <div class="content-handle">
-      <div class="btn disabled">上一章</div>
+      <div
+        class="btn"
+        :class="{ disabled: !chapters[0] }"
+        @click="changeChapter(chapters[0])"
+      >
+        上一章
+      </div>
       <div class="btn">返回目录</div>
-      <div class="btn">下一章</div>
+      <div
+        class="btn"
+        :class="{ disabled: !chapters[1] }"
+        @click="changeChapter(chapters[1])"
+      >
+        下一章
+      </div>
     </div>
   </div>
 </template>
@@ -15,25 +27,42 @@ import useStore from "../store";
 
 export default {
   setup() {
-    const port = inject('port');
+    const port = inject("port");
 
     const store = useStore();
     const bookDetail = computed(() => store.bookDetail);
     // 上一章和下一章
     const chapters = computed(() => {
-      const {chapterList, chapterId} = store.bookDetail;
-      if(!chapterId || !chapterList || chapterList.length === 0){
-        return []
+      const { chapterList, chapterId } = store.bookDetail;
+      if (!chapterId || !chapterList || chapterList.length === 0) {
+        return [];
       }
-      const index = chapterList.findIndex(item => item.id === chapterId);
-      const lastChapter = index - 1 < 0 ? null : chapterList[index - 1], nextChapter = index + 1 >= chapterList.length ? null : chapterList[index + 1];
-      console.log(index, chapterList.length, lastChapter, nextChapter);
+      const index = chapterList.findIndex((item) => item.id === chapterId);
+      const lastChapter = index - 1 < 0 ? null : chapterList[index - 1],
+        nextChapter =
+          index + 1 >= chapterList.length ? null : chapterList[index + 1];
       return [lastChapter, nextChapter];
-    })
-    console.log('book detail:', bookDetail);
+    });
+
+    const changeChapter = (chapter) => {
+      if (!chapter) {
+        return;
+      }
+      const { id, title } = chapter;
+      port.postMessage({
+        type: "read",
+        value: {
+          bookId: bookDetail.value.bookId,
+          chapterId: id,
+          chapterTitle: title,
+        },
+      });
+    };
+
     return {
       bookDetail,
       chapters,
+      changeChapter,
     };
   },
 };

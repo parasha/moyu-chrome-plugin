@@ -14,11 +14,16 @@ export const setBookInStorage = async (bookInfo: BookDetail) => {
   return newMap;
 };
 
+
+export const getBooksReadSchedule = async () => {
+  return await get<BookInfoMap>("books-read-schedule") || {};
+}
+
 // 保存当前书籍的阅读进度
 export const setBooksSchedule = async (bookId: number, chapterInfo: ChapterInfo) => {
   const booksMap = await getStorageBooks() || {};
   const book = booksMap[bookId];
   book.schedule = chapterInfo;
-  await set("books-in-storage", booksMap);
+  await set("books-read-schedule", booksMap);
   return booksMap;
 };

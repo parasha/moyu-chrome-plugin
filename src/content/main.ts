@@ -1,7 +1,7 @@
 import '@/common/less/reset.less';
 
 import { createApp } from "vue";
-import { createPinia }from 'pinia';
+import { createPinia } from 'pinia';
 import { PageType, BookDetail } from '@/definitions/book';
 import { initMessageChannel, ChannelType } from '@/common/js/message';
 import App from './App.vue';
@@ -13,6 +13,8 @@ const initApp = (() => {
     return (initData: BookDetail, port: any) => {
         if (cache) {
             console.log('重复打开');
+            // 通过 port 向 app 内传消息
+            port.postMessage({ type: 'reset-book-info', value: initData });
             return;
         }
 
@@ -37,7 +39,7 @@ const initChannelBetweenContentWithBackground = async () => {
     // 事件注册
     port.addListener(({ type, value }) => {
         switch (type) {
-            case 'render':
+            case 'render-app':
                 app = initApp(value, port);
                 break;
         }

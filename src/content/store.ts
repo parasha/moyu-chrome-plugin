@@ -17,11 +17,11 @@ const useStore = defineStore('book', {
     },
 
     actions: {
-        updateBookDetail(value: BookDetail){
+        updateBookDetail(value: BookDetail) {
             this.bookDetail = { ...this.bookDetail, ...value };
         },
 
-        resetBookDetail(value: BookDetail){
+        resetBookDetail(value: BookDetail) {
             this.bookDetail = value;
         }
     }
