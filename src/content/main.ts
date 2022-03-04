@@ -1,4 +1,4 @@
-import '@/common/less/reset.less';
+
 
 import { createApp } from "vue";
 import { createPinia } from 'pinia';

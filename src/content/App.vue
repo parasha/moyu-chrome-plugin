@@ -73,6 +73,8 @@ export default {
 </script>
 
 <style lang='less' scoped>
+@import '@/common/less/reset.less';
+
 .moyu-reader-window {
   width: 300px;
   height: 150px;
