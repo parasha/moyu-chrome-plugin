@@ -8,8 +8,8 @@ export const getStorageBooks = async () => {
 
 export const setBookInStorage = async (bookInfo: BookDetail) => {
   const booksMap = await getStorageBooks() || {};
-  const { bookId } = bookInfo ;
-  const newMap = { ...booksMap, [bookId]: bookInfo }
+  const { bookId } = bookInfo;
+  const newMap = { ...booksMap, [bookId]: bookInfo };
   await set("books-in-storage", newMap);
   return newMap;
 };

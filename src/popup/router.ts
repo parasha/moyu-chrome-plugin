@@ -3,7 +3,8 @@ import useStore from './store';
 
 const routes: RouteRecordRaw[]  = [
   {
-    path: "/",
+    // chrome 插件的 popup 默认地址是 index.html 
+    path: ENV === 'development' ? '/' : "/index.html",
     component: () => import("./pages/home.vue"),
   },
   {

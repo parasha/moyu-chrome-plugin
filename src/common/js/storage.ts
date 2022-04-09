@@ -1,5 +1,6 @@
 const isDev = ENV === "development";
 
+// 不知道为什么，promisefy 不能用
 const promisefy = <T>(fn): ((...arg: any) => Promise<T>) => {
   return (...rest) => {
     return new Promise((res, rej) => {
@@ -23,7 +24,12 @@ export const get = <T>(key: string): Promise<T> => {
       resolve(JSON.parse(res));
     });
   } else {
-    return promisefy<T>(chrome.storage.sync.get)(key);
+    // return promisefy<T>(chrome.storage.sync.get)(key);
+    return new Promise(res => {
+      chrome.storage.sync.get(key, (result) => {
+        res(result[key]);
+      })
+    });
   }
 };
 
@@ -34,7 +40,12 @@ export const set = (key: string, value: any) => {
       res(true);
     });
   } else {
-    return promisefy(chrome.storage.sync.set)({ [key]: value });
+    // return promisefy(chrome.storage.sync.set)({ [key]: value });
+    return new Promise(res => {
+      chrome.storage.sync.set({[key]: value}, (result) => {
+        res(result);
+      })
+    });
   }
 };
 
@@ -45,7 +56,12 @@ export const remove = (key: string) => {
       res(true);
     });
   } else {
-    return promisefy(chrome.storage.sync.remove)(key);
+    // return promisefy(chrome.storage.sync.remove)(key);
+    return new Promise(res => {
+      chrome.storage.sync.remove(key, (result) => {
+        res(result);
+      })
+    });
   }
 };
 
@@ -56,6 +72,11 @@ export const clear = () => {
       res(true);
     });
   } else {
-    return promisefy(chrome.storage.sync.clear)();
+    // return promisefy(chrome.storage.sync.clear)();
+    return new Promise(res => {
+      chrome.storage.sync.clear((result) => {
+        res(result);
+      })
+    });
   }
 };

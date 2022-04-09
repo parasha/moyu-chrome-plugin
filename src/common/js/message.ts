@@ -37,10 +37,13 @@ export const initMessageChannel = async (type: ChannelType): Promise<any> => {
     } else {
         if (type === ChannelType.Background) {
             const tabId = await promiseBackgroundGetCurrentTab();
-            const promisePort = chrome.tabs.connect(tabId, { name: tabId });
+            const promisePort = chrome.tabs.connect(tabId, { name:  `tab-${tabId}` });
+            // 对 dev 和 prod 之间的api差异做一个抹平操作
+            promisePort.addListener = promisePort.onMessage.addListener;
             return promisePort
         } else {
-            const promisePort = await promisefyContentConnect();
+            const promisePort = await promisefyContentConnect() as any;
+            promisePort.addListener = promisePort.onMessage.addListener;
             return promisePort;
         }
     }

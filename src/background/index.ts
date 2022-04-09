@@ -20,11 +20,10 @@ const bridge: Bridge = {
   openContainer: openContentInsertWindow,
 };
 
-if (ENV === "development") {
-  // @ts-ignore
-  window.bg = {
-    api,
-    storage,
-    bridge,
-  };
-}
+
+// @ts-ignore
+window.bg = {
+  api,
+  storage,
+  bridge,
+};

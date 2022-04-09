@@ -76,6 +76,10 @@ export default {
 @import '@/common/less/reset.less';
 
 .moyu-reader-window {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+
   width: 300px;
   height: 150px;
   background-color: rgb(253, 243, 139);

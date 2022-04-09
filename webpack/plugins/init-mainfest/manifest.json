@@ -8,13 +8,12 @@
   },
   "browser_action": {
     "default_icon": "./assets/theresa.png",
-    "default_popup": "./popup/index.html"
+    "default_popup": "./index.html"
   },
   "background": {
     "scripts": ["./background/index.js"],
     "persistent": false
   },
-  "options_page": "./option/index.html",
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],

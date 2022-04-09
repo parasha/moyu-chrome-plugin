@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "moyu plugin",
+    "version": "0.0.1",
+    "description": "这是一段描述",
+    "icons": {
+      "84": "./assets/theresa.png"
+    },
+    "action": {
+      "default_icon": "./assets/theresa.png",
+      "default_popup": "./index.html"
+    },
+    "background": {
+      "service_worker": ["./background/index.js"]
+    },
+    "content_scripts": [
+      {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["./content/index.js"],
+        "css": ["./content/index.css"],
+        "run_at": "document_idle"
+      }
+    ],
+    "permissions": ["activeTab", "storage"]
+  }
+  
