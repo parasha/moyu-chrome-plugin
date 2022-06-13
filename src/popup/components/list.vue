@@ -1,0 +1,71 @@
+<template>
+    <List v-model:loading="loading" :finished="true" finished-text="没有更多了">
+        <div v-for="book of list" :key="`book-list-item-${book.id}`" class="book-item">
+            <div class="left noselect">
+                <p class="book-name ellipsis">{{ book.title }}</p>
+                <div class="read-schedule ellipsis">阅读进度：未读</div>
+                <div class="read-schedule ellipsis">最新章节：{{ book.newChapter }}</div>
+            </div>
+            <!-- TODO: 这里以后做一个移出书架功能 -->
+            <!-- <span v-if="isInStorage"></span> -->
+            <Button round plain type="primary" size="small">收藏</Button>
+        </div>
+    </List>
+</template>
+
+<script lang="ts" setup>
+import { List, Button } from "vant";
+import { defineProps } from "vue";
+import { BookDetail } from '@/definitions/book';
+
+const loading = defineProps<{
+    loading: boolean,
+    list: BookDetail[]
+}>()
+
+</script>
+
+
+<style lang="less" scoped>
+.book-item {
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f2f3f5;
+    cursor: pointer;
+
+    .left {
+        flex: 1;
+
+        .book-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .read-schedule {
+            font-size: 12px;
+            color: #969799;
+        }
+    }
+
+    .right {
+        flex-shrink: 0;
+    }
+}
+
+.ellipsis {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+</style>
