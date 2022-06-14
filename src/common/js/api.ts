@@ -23,14 +23,14 @@ export const searchBook = async (bookname: string) => {
     const bookTitle = tagA.text();
     const url = tagA.attr().href;
     const updateDom = $(bookDom).find(".update a");
-    const newChapter = updateDom.text();
+    const newChapterText = updateDom.text();
     // 从 url 中获取数据
     const bookId = url.match(bookIdReg);
     if (bookId) {
       result.push({
         title: bookTitle,
         id: Number(bookId[1]),
-        newChapter,
+        newChapterText,
       });
     }
   });
@@ -40,19 +40,19 @@ export const searchBook = async (bookname: string) => {
 const chapterIdReg = /([0-9]+)\.html/;
 
 /**
- * 章节列表
- * @param {string} bookurl
+ * 书籍详情
  */
-export const getBookChapter = async (bookId: number) => {
+export const getBookDetail = async (bookId: number): Promise<BookDetail> => {
   const res: string = await request.get(`/txt/${bookId}/index.html`);
   const $ = cheerio.load(res);
+  const title = $('.info').find('h2').text();
   let chapterList: ChapterInfo[] = [];
   $(".listmain dd").each((index, chapterDom) => {
     const dom = $(chapterDom).find("a");
     const title = dom.text();
     const url = dom.attr().href;
     // 从 url 中获取数据
-    const chapterId = url.match(bookIdReg);
+    const chapterId = url.match(chapterIdReg);
     if (chapterId) {
       chapterList.push({
         title,
@@ -73,7 +73,7 @@ export const getBookChapter = async (bookId: number) => {
   // 最新章节
   const newChapterList = chapterList.slice(0, firstChapterIndex);
   chapterList = chapterList.splice(firstChapterIndex);
-  return { chapterList, newChapterList };
+  return { id: bookId, title, chapterList, newChapterList, newChapterText: newChapterList[0].title };
 };
 
 export const getBookContent = async (bookId: number, chapterId: number) => {

@@ -1,10 +1,12 @@
 <template>
     <div id="moyu-chrome-plugin-popup">
-        <RouterView />
-        <Tabbar v-model="active" :fixed="false">
-            <TabbarItem icon="home-o" name="home" >首页</TabbarItem>
+        <suspense>
+            <RouterView />
+        </suspense>
+        <!-- <Tabbar v-model="active" :fixed="false">
+            <TabbarItem icon="home-o" name="home" >书架</TabbarItem>
             <TabbarItem icon="contact" name="user" >我的</TabbarItem>
-        </Tabbar>
+        </Tabbar> -->
     </div>
 </template>
 

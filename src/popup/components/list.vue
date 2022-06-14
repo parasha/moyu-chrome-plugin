@@ -4,17 +4,15 @@
             <div class="left noselect">
                 <p class="book-name ellipsis">{{ book.title }}</p>
                 <div class="read-schedule ellipsis">阅读进度：未读</div>
-                <div class="read-schedule ellipsis">最新章节：{{ book.newChapter }}</div>
+                <div class="read-schedule ellipsis">最新章节：{{ book.newChapterText }}</div>
             </div>
-            <!-- TODO: 这里以后做一个移出书架功能 -->
-            <!-- <span v-if="isInStorage"></span> -->
-            <Button round plain type="primary" size="small">收藏</Button>
+            <slot :id="book.id" />
         </div>
     </List>
 </template>
 
 <script lang="ts" setup>
-import { List, Button } from "vant";
+import { List } from "vant";
 import { defineProps } from "vue";
 import { BookDetail } from '@/definitions/book';
 
