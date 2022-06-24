@@ -8,7 +8,3 @@ declare module '*.vue' {
   }
   
 declare const chrome: {[key: string]: any};
-
-namespace JSX {
-  interface Element extends React.ReactElement<any, any> {}
-}

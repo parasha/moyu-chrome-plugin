@@ -1,18 +1,6 @@
-import ReactDOM from 'react-dom/client'
+import { createApp } from "vue";
 import { port } from './port';
-import Reader from './pages/reader';
-import style from './style.module.less';
-
-const App = ({initData}: {initData: any}) => {
-  return (
-    <div id={style['moyu-reader-contnet-window']}>
-      <div className="window-header">
-        <span className="close">x</span>
-      </div>
-      <Reader chapter={initData} />
-    </div>
-  );
-}
+import App from './App.vue';
 
 const insertWindow = (initData: any) => {
   const oldDom = document.querySelector('#moyu-chrome-chrome-plugin-insert-container')
@@ -23,9 +11,9 @@ const insertWindow = (initData: any) => {
   AppDom.setAttribute('id', 'moyu-chrome-chrome-plugin-insert-container');
   document.body.appendChild(AppDom);
 
-  ReactDOM.createRoot(AppDom).render(
-    <App initData={initData} />
-  )
+  const app = createApp(App, { initData, port });
+  app.provide('port', port);
+  app.mount(AppDom);
 };
 
 port.onMessage.addListener(({ type, value }: { type: string, value: any }) => {
