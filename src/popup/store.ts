@@ -20,7 +20,7 @@ const useStore = defineStore("book", {
         storageBookIdList: number[]
     } => {
         return {
-            bg: null,
+            bg: getBackground(),
             bookInfoMap: {},
             storageBookIdList: []
         };
@@ -29,9 +29,6 @@ const useStore = defineStore("book", {
     // action
     actions: {
         async getStorageBooksIds() {
-            if (!this.bg) {
-                this.bg = getBackground();
-            }
             const idsList = (await this.bg.storage.getStorageBooks()) as number[];
             this.storageBookIdList = idsList;
         },
@@ -41,23 +38,16 @@ const useStore = defineStore("book", {
             const promiseList = this.storageBookIdList.map(id => getBookDetail(id));
             const booksList = await Promise.all(promiseList);
             booksList.forEach(book => {
-                console.log('book:', book)
                 this.bookInfoMap[book.id] = book;
             })
         },
         // 添加书籍进书架
         async addBookIntoStorage(id: number) {
-            if (!this.bg) {
-                this.bg = getBackground();
-            }
             const idsList = (await this.bg.storage.addBookIntoStorage(id)) as number[];
             this.storageBookIdList = idsList;
         },
         // 从书架中删除书籍
         async deleteBookFromStorage(id: number) {
-            if (!this.bg) {
-                this.bg = getBackground();
-            }
             const idsList = (await this.bg.storage.deleteBookFromStorage(id)) as number[];
             this.storageBookIdList = idsList;
         }

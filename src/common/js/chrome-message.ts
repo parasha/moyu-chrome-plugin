@@ -11,7 +11,7 @@ export enum ChannelType {
 // 模拟的本地 message
 class DevMessage {
     public list: Array<(params: any) => void>;
-    public onMessage = { addListener: this.addListener }
+    public onMessage = { addListener: this.addListener.bind(this) }
     // 构造函数
     constructor() {
         this.list = [];
@@ -37,6 +37,8 @@ class DevMessage {
     }
 }
 
+const devMessage = new DevMessage();
+
 
 // content 链接
 const promisefyContentConnect = () => {
@@ -60,7 +62,7 @@ const promiseBackgroundGetCurrentTab = () => {
 
 export const initMessageChannel = async (type: ChannelType): Promise<any> => {
     if (isDev) {
-        return Promise.resolve(new DevMessage());
+        return Promise.resolve(devMessage);
     } else {
         if (type === ChannelType.Background) {
             const tabId = await promiseBackgroundGetCurrentTab();

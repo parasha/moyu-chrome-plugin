@@ -4,27 +4,33 @@ export enum PageType {
   Chapters = 'chapters'
 }
 
+export interface BookInfo {
+  // 书
+  id: number,
+  title: string,
+  // 最新章节名
+  newChapterText: string,
+}
+
 export interface BookDetail {
   // 书
   id: number,
   title: string,
   // 章节列表
-  chapterList?: Array<ChapterInfo>,
-  newChapterList?: Array<ChapterInfo>,
+  chapterList: Array<Chapter>,
+  newChapterList: Array<Chapter>,
   // 最新章节名
-  newChapterText?: string,
-  // 章节
-  chapterId?: number,
-  chapterTitle?: string,
-  // 正文
-  content?: string,
-  // 前一章，后一章
-  preChapterId?: number,
-  nextChapterId?: number,
+  newChapterText: string,
 }
 
 
-export interface ChapterInfo {
+export interface Chapter {
+  bookId: number;
   title: string; // 章节名
   id: number;
+  // 正文
+  content?: string,
+  // 前一章，后一章
+  preId?: number,
+  nextId?: number,
 }

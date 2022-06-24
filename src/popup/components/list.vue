@@ -1,7 +1,7 @@
 <template>
-    <List v-model:loading="loading" :finished="true" finished-text="没有更多了">
-        <div v-for="book of list" :key="`book-list-item-${book.id}`" class="book-item">
-            <div class="left noselect">
+    <List v-model:loading="props.loading" :finished="true" finished-text="没有更多了">
+        <div v-for="book of props.list" :key="`book-list-item-${book.id}`" class="book-item">
+            <div class="left noselect" @click="openBook(book)">
                 <p class="book-name ellipsis">{{ book.title }}</p>
                 <div class="read-schedule ellipsis">阅读进度：未读</div>
                 <div class="read-schedule ellipsis">最新章节：{{ book.newChapterText }}</div>
@@ -14,12 +14,19 @@
 <script lang="ts" setup>
 import { List } from "vant";
 import { defineProps } from "vue";
-import { BookDetail } from '@/definitions/book';
+import useStore from '../store';
+import { BookDetail, BookInfo } from '@/definitions/book';
 
-const loading = defineProps<{
+const props = defineProps<{
     loading: boolean,
     list: BookDetail[]
 }>()
+
+const store = useStore();
+
+const openBook = (book: BookDetail | BookInfo) => {
+    store.bg.book.openBook(book.id, book);
+}
 
 </script>
 

@@ -1,7 +1,7 @@
 <template>
-    <BookList :loading="isLoading" :list="bookList" v-slot="slotProps">
+    <BookList class="search-list" :loading="isLoading" :list="bookList" v-slot="slotProps">
         <Button v-if="!checkBookInStorage(slotProps.id)" round plain type="primary" size="small"
-            @click="addBookIntoStorage(slotProps.id)">收藏</Button>
+            @click.prevent.stop="addBookIntoStorage(slotProps.id)">收藏</Button>
     </BookList>
 </template>
 
@@ -11,10 +11,10 @@ import { useRoute } from "vue-router";
 import useStore from '../store';
 import BookList from '../components/list.vue';
 import { Button } from "vant";
-import { BookDetail } from '@/definitions/book';
+import { BookDetail, BookInfo } from '@/definitions/book';
 import { searchBook } from '@/common/js/api';
 
-const bookList = ref<BookDetail[]>([]);
+const bookList = ref<Array<BookDetail | BookInfo>>([]);
 const isLoading = ref(false);
 
 const route = useRoute();
@@ -41,4 +41,8 @@ const addBookIntoStorage = async (id: number) => {
 
 
 <style lang="less" scoped>
+.search-list {
+    max-height: 350px;
+    overflow-y: scroll;
+}
 </style>

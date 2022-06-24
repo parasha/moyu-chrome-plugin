@@ -27,6 +27,5 @@ watch(active, (newValue) => {
 <style lang="less" scoped>
 #moyu-chrome-plugin-popup {
     width: 300px;
-    height: 450px;
 }
 </style>

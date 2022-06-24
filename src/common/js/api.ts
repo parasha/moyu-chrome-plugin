@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { createRequest } from "./request";
-import { BookDetail, ChapterInfo } from "@/definitions/book";
+import { BookInfo, BookDetail, Chapter } from "@/definitions/book";
 
 // 这里主要处理请求
 const request = createRequest(import.meta.env.VITE_API_DOMAIN, {
@@ -17,7 +17,7 @@ export const searchBook = async (bookname: string) => {
     `/search.php?searchkey=${encodeURIComponent(bookname)}`
   );
   const $ = cheerio.load(res);
-  const result: BookDetail[] = [];
+  const result: BookInfo[] = [];
   $(".bookbox .bookinfo").each((index, bookDom) => {
     const tagA = $(bookDom).find(".bookname a");
     const bookTitle = tagA.text();
@@ -46,7 +46,7 @@ export const getBookDetail = async (bookId: number): Promise<BookDetail> => {
   const res: string = await request.get(`/txt/${bookId}/index.html`);
   const $ = cheerio.load(res);
   const title = $('.info').find('h2').text();
-  let chapterList: ChapterInfo[] = [];
+  let chapterList: Chapter[] = [];
   $(".listmain dd").each((index, chapterDom) => {
     const dom = $(chapterDom).find("a");
     const title = dom.text();
@@ -57,6 +57,7 @@ export const getBookDetail = async (bookId: number): Promise<BookDetail> => {
       chapterList.push({
         title,
         id: Number(chapterId[1]),
+        bookId,
       });
     }
   });
@@ -76,9 +77,10 @@ export const getBookDetail = async (bookId: number): Promise<BookDetail> => {
   return { id: bookId, title, chapterList, newChapterList, newChapterText: newChapterList[0].title };
 };
 
-export const getBookContent = async (bookId: number, chapterId: number) => {
+export const getBookContent = async (bookId: number, chapterId: number): Promise<Chapter> => {
   const res: string = await request.get(`/txt/${bookId}/${chapterId}.html`);
   const $ = cheerio.load(res);
+  const title = $('.content').find('h1').text();
   let content = $("#content").html() || '';
   // 文案处理
   content = content.replaceAll(" ", "");
@@ -91,5 +93,18 @@ export const getBookContent = async (bookId: number, chapterId: number) => {
   sectionList.forEach((section) => {
     result += `<div>${section}</div>`;
   });
-  return result;
+  // 上下章节
+  const chapters = $('.page_chapter ul').find('li');
+  const preChapter = chapters.first().find('a').attr().href.match(chapterIdReg),
+    nextChapter = chapters.last().find('a').attr().href.match(chapterIdReg);
+  return {
+    bookId: bookId,
+    title, // 章节名
+    id: chapterId,
+    // 正文
+    content: result,
+    // 前一章，后一章
+    preId: preChapter ? Number(preChapter[1]) : undefined,
+    nextId: nextChapter ? Number(nextChapter[1]) : undefined,
+  }
 };
