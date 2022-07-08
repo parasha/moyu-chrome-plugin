@@ -1,10 +1,10 @@
-import { getStorageBooks, addBookIntoStorage, deleteBookFromStorage } from './storage';
+import { getStorageBooks, addBookIntoStorage, deleteBookFromStorage, setReadHistory, getReadHistoryById } from './storage';
 import BookHandle from './book-handle';
 import {initExtension, ExtensionType} from '@/common/js/chrome-extension';
 import {initMessageChannel, ChannelType} from '@/common/js/chrome-message';
 
 const storage = {
-    getStorageBooks, addBookIntoStorage, deleteBookFromStorage
+    getStorageBooks, addBookIntoStorage, deleteBookFromStorage, getReadHistoryById
 }
 
 const port = await initMessageChannel(ChannelType.Background);
@@ -15,6 +15,8 @@ port.onMessage.addListener(async ({type, value}: {type: string, value: any}) => 
     switch(type) {
         case 'get-chapter':
             const chapter = await book.loadChapterInfo(value.bookId, value.chapterId);
+            // 保存一个阅读进度
+            setReadHistory(value.bookId, chapter);
             port.postMessage({ type: 'show-chapter', value: chapter });
             break;
         case 'get-menu':
@@ -24,4 +26,4 @@ port.onMessage.addListener(async ({type, value}: {type: string, value: any}) => 
     }
 });
 
-const extension = initExtension(ExtensionType.Background, {storage, book})
+const extension = initExtension(ExtensionType.Background, {storage, book});

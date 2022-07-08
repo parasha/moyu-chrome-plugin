@@ -3,7 +3,7 @@
         <div v-for="book of props.list" :key="`book-list-item-${book.id}`" class="book-item">
             <div class="left noselect" @click="openBook(book)">
                 <p class="book-name ellipsis">{{ book.title }}</p>
-                <div class="read-schedule ellipsis">阅读进度：未读</div>
+                <div class="read-schedule ellipsis">阅读进度：{{ book.history ? book.history.title : "未读"}}</div>
                 <div class="read-schedule ellipsis">最新章节：{{ book.newChapterText }}</div>
             </div>
             <slot :id="book.id" />

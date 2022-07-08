@@ -1,5 +1,5 @@
 import { set, get, remove, clear } from "@/common/js/chrome-storage";
-// import { BookDetail, ChapterInfo, BookInfoMap, BookScheduleMap } from "@/definitions/book";
+import { Chapter, ReadHistory } from "@/definitions/book";
 
 // 获取书架中的书籍列表
 export const getStorageBooks = async (): Promise<number[]> => {
@@ -34,14 +34,21 @@ export const deleteBookFromStorage = async (id: number): Promise<number[]> => {
 };
 
 
-// export const getBooksSchedule = async () => {
-//     return await get<BookScheduleMap>("books-read-schedule") || {};
-// }
+const getReadHistory = async () => {
+    return await get<ReadHistory>("books-read-schedule") || {};
+}
 
-// // 保存当前书籍的阅读进度
-// export const setBooksSchedule = async (bookId: number, chapterInfo: ChapterInfo) => {
-//     const bookScheduleMap = await getBooksSchedule() || {};
-//     const newbookScheduleMap = { ...bookScheduleMap, [bookId]: chapterInfo }
-//     await set("books-read-schedule", newbookScheduleMap);
-//     return newbookScheduleMap;
-// };
+export const getReadHistoryById = async (id: number) => {
+    const history = await getReadHistory();
+    return history[id];
+}
+
+// 保存当前书籍的阅读进度
+export const setReadHistory = async (bookId: number, chapterInfo: Chapter) => {
+    const readHistory = await getReadHistory() || {};
+    // 没必要保存正文，太占空间
+    chapterInfo.content = '';
+    const newHistory = { ...readHistory, [bookId]: chapterInfo }
+    await set("books-read-schedule", newHistory);
+    return newHistory;
+};

@@ -21,6 +21,7 @@ export interface BookDetail {
   newChapterList: Array<Chapter>,
   // 最新章节名
   newChapterText: string,
+  history?: Chapter
 }
 
 
@@ -33,4 +34,8 @@ export interface Chapter {
   // 前一章，后一章
   preId?: number,
   nextId?: number,
+}
+
+export interface ReadHistory {
+  [id: number]: Chapter
 }

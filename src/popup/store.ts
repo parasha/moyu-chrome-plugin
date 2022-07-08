@@ -37,9 +37,13 @@ const useStore = defineStore("book", {
             await this.getStorageBooksIds();
             const promiseList = this.storageBookIdList.map(id => getBookDetail(id));
             const booksList = await Promise.all(promiseList);
-            booksList.forEach(book => {
+            booksList.forEach(async book => {
+                const bookHistory = await this.bg.storage.getReadHistoryById(book.id);
+                if (bookHistory) {
+                    book.history = bookHistory;
+                }
                 this.bookInfoMap[book.id] = book;
-            })
+            });
         },
         // 添加书籍进书架
         async addBookIntoStorage(id: number) {

@@ -1,7 +1,7 @@
 <template>
     <div id="moyu-reader-contnet-window">
         <div class="window-header">
-            <span class="close" @click="close">x</span>
+            <span class="close">-</span>
         </div>
         <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="scrollPage"
             @menu="toMenuPage" />
@@ -50,7 +50,6 @@ port.onMessage.addListener(async ({ type, value }: { type: string, value: any })
             await nextTick();
             resetDomScroll(menuPage);
             break;
-
     }
 });
 
@@ -83,6 +82,12 @@ const toMenuPage = () => {
         background-color: rgb(254, 233, 48);
 
         .close {
+            font-size: 12px;
+            line-height: 1;
+            padding: 0 4px;
+            border-radius: 50%;
+            background-color: rgba(248, 248, 248, .6);
+            text-align: center;
             cursor: pointer;
         }
     }

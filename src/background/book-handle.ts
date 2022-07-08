@@ -1,5 +1,6 @@
 import { BookDetail, BookInfo } from '@/definitions/book';
 import { getBookDetail, getBookContent } from '@/common/js/api';
+import { getReadHistoryById } from './storage';
 
 
 class BookHandle {
@@ -13,8 +14,10 @@ class BookHandle {
         if (!book.hasOwnProperty('chapterList')) {
             book = await getBookDetail(id);
         }
-        // TODO: 获取当前阅读进度
-        const chapter = await getBookContent(id, (book as BookDetail).chapterList[0].id);
+        // 获取历史阅读进度
+        const history = await getReadHistoryById(id);
+        const historyChapterId = history?.id
+        const chapter = await getBookContent(id, historyChapterId || (book as BookDetail).chapterList[0].id);
         this.port.postMessage({ type: 'open-book', value: chapter });
     }
 
