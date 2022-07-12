@@ -6,13 +6,21 @@ import { createStyleImportPlugin, VantResolve } from 'vite-plugin-style-import'
 
 
 export default ({ mode }) => defineConfig({
-  // build: {
-  //   rollupOptions: {
-  //     input: {
-  //       index: resolve(__dirname, './src/dev.html')
-  //     },
-  //   }
-  // },
+  build: {
+    target: 'esnext',
+    rollupOptions: {
+      input: {
+        popup: resolve(__dirname, './src/popup/main.ts'),
+        background: resolve(__dirname, './src/background/index.ts'),
+        content: resolve(__dirname, './src/content/main.ts'),
+      },
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+      }
+    }
+  },
   server: {
     proxy: {
       '/biquge-api': {

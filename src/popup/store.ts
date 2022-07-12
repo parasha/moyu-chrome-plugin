@@ -8,6 +8,7 @@ import { initExtension, ExtensionType } from '@/common/js/chrome-extension';
 const getBackground = () => {
     const extension = initExtension(ExtensionType.Popup, {});
     const bg = extension.getBackgroundPage();
+    console.log('popup get background:', extension, bg);
     return bg;
 }
 
