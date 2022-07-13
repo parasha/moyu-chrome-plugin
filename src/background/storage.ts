@@ -1,28 +1,54 @@
-import { set, get, remove, clear } from "@/common/js/storage";
-import { BookDetail, ChapterInfo, BookInfoMap, BookScheduleMap } from "@/definitions/book";
+import { set, get, remove, clear } from "@/common/js/chrome-storage";
+import { Chapter, ReadHistory } from "@/definitions/book";
 
-
-export const getStorageBooks = async () => {
-  return await get<BookInfoMap>("books-in-storage") || {};
+// 获取书架中的书籍列表
+export const getStorageBooks = async (): Promise<number[]> => {
+    return await get<number[]>("books-in-storage") || [];
 };
 
-export const setBookInStorage = async (bookInfo: BookDetail) => {
-  const booksMap = await getStorageBooks() || {};
-  const { bookId } = bookInfo;
-  const newMap = { ...booksMap, [bookId]: bookInfo };
-  await set("books-in-storage", newMap);
-  return newMap;
+// 添加新书进书架
+export const addBookIntoStorage = async (id: number): Promise<number[]> => {
+    const booksIdList = await getStorageBooks() || [];
+    if (booksIdList.findIndex(bookId => bookId === id) > -1) {
+        // 重复保存
+        return booksIdList;
+    } else {
+        const newList = [...booksIdList, id];
+        await set("books-in-storage", newList);
+        return newList;
+    }
+};
+
+// 从书架里删除书
+export const deleteBookFromStorage = async (id: number): Promise<number[]> => {
+    const booksIdList = await getStorageBooks() || [];
+    const index = booksIdList.findIndex(bookId => bookId === id)
+    if (index > -1) {
+        booksIdList.splice(index, 1);
+        await set("books-in-storage", booksIdList);
+        return booksIdList;
+    } else {
+        // 无效操作
+        return booksIdList;
+    }
 };
 
 
-export const getBooksSchedule = async () => {
-  return await get<BookScheduleMap>("books-read-schedule") || {};
+const getReadHistory = async () => {
+    return await get<ReadHistory>("books-read-schedule") || {};
+}
+
+export const getReadHistoryById = async (id: number) => {
+    const history = await getReadHistory();
+    return history[id];
 }
 
 // 保存当前书籍的阅读进度
-export const setBooksSchedule = async (bookId: number, chapterInfo: ChapterInfo) => {
-  const bookScheduleMap = await getBooksSchedule() || {};
-  const newbookScheduleMap = {...bookScheduleMap, [bookId]: chapterInfo}
-  await set("books-read-schedule", newbookScheduleMap);
-  return newbookScheduleMap;
+export const setReadHistory = async (bookId: number, chapterInfo: Chapter) => {
+    const readHistory = await getReadHistory() || {};
+    // 没必要保存正文，太占空间
+    chapterInfo.content = '';
+    const newHistory = { ...readHistory, [bookId]: chapterInfo }
+    await set("books-read-schedule", newHistory);
+    return newHistory;
 };

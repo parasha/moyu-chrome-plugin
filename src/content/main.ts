@@ -1,54 +1,24 @@
-
-
 import { createApp } from "vue";
-import { createPinia } from 'pinia';
-import { PageType, BookDetail } from '@/definitions/book';
-import { initMessageChannel, ChannelType } from '@/common/js/message';
+import { port } from './port';
 import App from './App.vue';
+import { Chapter } from '@/definitions/book';
 
-//  实例化app
-const initApp = (() => {
-    let cache = null;
+const insertWindow = (defaultChapter: Chapter) => {
+  const oldDom = document.querySelector('#moyu-chrome-chrome-plugin-insert-container')
+  if (oldDom) {
+    document.body.removeChild(oldDom);
+  }
+  const AppDom = document.createElement('div');
+  AppDom.setAttribute('id', 'moyu-chrome-chrome-plugin-insert-container');
+  document.body.appendChild(AppDom);
 
-    return (initData: BookDetail, port: any) => {
-        if (cache) {
-            console.log('重复打开');
-            // 通过 port 向 app 内传消息
-            port.postMessage({ type: 'reset-book-info', value: initData });
-            return;
-        }
+  const app = createApp(App, { chapter: defaultChapter });
+  app.provide('port', port);
+  app.mount(AppDom);
+};
 
-        const AppDom = document.createElement('div');
-        AppDom.setAttribute('id', 'moyu-chrome-plugin-insert-pop');
-        document.body.appendChild(AppDom);
-
-        const app = createApp(App, { initData, port });
-        app.use(createPinia());
-        app.mount(AppDom);
-
-        cache = true;
-
-        return app;
-    }
-})();
-
-// 注册 Message Channel
-const initChannelBetweenContentWithBackground = async () => {
-    const port = await initMessageChannel(ChannelType.Content);
-    let app;
-    // 事件注册
-    port.addListener(({ type, value }) => {
-        switch (type) {
-            case 'render-app':
-                app = initApp(value, port);
-                break;
-        }
-    });
-}
-
-/**
- * initContent 要做两件事：
- * 1. 实例化 App
- * 2. 获取小说的基本信息
- */
-initChannelBetweenContentWithBackground();
+port.onMessage.addListener(({ type, value }: { type: string, value: any }) => {
+  if (type === 'open-book') {
+    insertWindow(value);
+  }
+});

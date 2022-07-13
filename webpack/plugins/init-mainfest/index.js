@@ -9,7 +9,7 @@ class InitMainFastPlugin {
     
     constructor() {
         // 获取外部参数
-        const json = readFileSync(path.resolve(__dirname, './manifest.json'));
+        const json = readFileSync(path.resolve(__dirname, './manifest_v3.json'));
         this.mainfest = JSON.parse(json);
       }
     
@@ -33,7 +33,7 @@ class InitMainFastPlugin {
                     });
                     if (name === 'background') {
                         // this.mainfest.background.service_worker = path.js[0];
-                        this.mainfest.background.scripts = path.js;
+                        this.mainfest.background.service_worker = path.js[0];
                     }
                     if(name === 'content') {
                         this.mainfest.content_scripts[0] = {

@@ -1,16 +1,16 @@
-import Axios, {AxiosRequestConfig} from "axios";
+import Axios from "axios";
 
 const headers = {
   "Content-Type": "application/json; charset=utf-8",
 };
 
-export const createRequest = (baseURL = "", config: AxiosRequestConfig) => {
+export const createRequest = (baseURL = "", config) => {
   const axios = Axios.create({
     baseURL: baseURL,
     withCredentials: true,
     timeout: 10000,
     headers: headers,
-    xsrfCookieName: undefined,
+    xsrfCookieName: null,
     ...config,
   });
 

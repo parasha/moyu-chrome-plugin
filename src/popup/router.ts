@@ -1,16 +1,35 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import useStore from './store';
+// 页面
+import Home from './pages/home.vue';
+import Search from './pages/search.vue';
+import User from './pages/user.vue';
+
 
 const routes: RouteRecordRaw[]  = [
-  {
-    // chrome 插件的 popup 默认地址是 index.html 
-    path: ENV === 'development' ? '/' : "/index.html",
-    component: () => import("./pages/home.vue"),
-  },
-  {
-    path: "/search",
-    component: () => import("./pages/search.vue"),
-  },
+    {
+        path: '/home',
+        name: 'home',
+        component: Home
+    },
+    {
+        path: '/search',
+        name: 'search',
+        component: Search
+    },
+    {
+        path: '/user',
+        name: 'user',
+        component: User
+    },
+    {
+        path: '/',
+        redirect: '/home'
+    },
+    {
+        // 这个是给打包后的 popup 准备的
+        path: '/popup.html',
+        redirect: '/home'
+    }
 ];
 
 const router = createRouter({
@@ -18,14 +37,8 @@ const router = createRouter({
   routes,
 });
 
-let store;
 
 router.beforeEach(async (to, from, next) => {
-  if(!store){
-    store = useStore();
-  }
-  // 这个其实没必要，看看以后换个地方
-  await store.getStorageBooks();
   next();
 });
 export default router;

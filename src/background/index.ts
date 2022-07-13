@@ -1,29 +1,29 @@
-import { getBookContent, getBookChapter, searchBook } from "./api";
-import { getStorageBooks, setBookInStorage, setBooksSchedule, getBooksSchedule } from "./storage";
-import { openContentInsertWindow } from './content-handle';
-import { Api, Storage, Bridge } from '@/definitions/background';
+import { getStorageBooks, addBookIntoStorage, deleteBookFromStorage, setReadHistory, getReadHistoryById } from './storage';
+import BookHandle from './book-handle';
+import {initExtension, ExtensionType} from '@/common/js/chrome-extension';
+import {initMessageChannel, ChannelType} from '@/common/js/chrome-message';
 
-const api: Api = {
-  searchBook,
-  getBookChapter,
-  getBookContent,
-};
+const storage = {
+    getStorageBooks, addBookIntoStorage, deleteBookFromStorage, getReadHistoryById
+}
 
-const storage: Storage = {
-  getStorageBooks,
-  setBookInStorage,
-  setBooksSchedule,
-  getBooksSchedule,
-};
+const port = await initMessageChannel(ChannelType.Background);
+const book = new BookHandle(port);
 
-const bridge: Bridge = {
-  openContainer: openContentInsertWindow,
-};
+// 添加事件监听
+port.onMessage.addListener(async ({type, value}: {type: string, value: any}) => {
+    switch(type) {
+        case 'get-chapter':
+            const chapter = await book.loadChapterInfo(value.bookId, value.chapterId);
+            // 保存一个阅读进度
+            setReadHistory(value.bookId, chapter);
+            port.postMessage({ type: 'show-chapter', value: chapter });
+            break;
+        case 'get-menu':
+            const bookInfo = await book.loadBookMenu(value.bookId);
+            port.postMessage({ type: 'show-menu', value: bookInfo });
+            break;
+    }
+});
 
-
-// @ts-ignore
-window.bg = {
-  api,
-  storage,
-  bridge,
-};
+const extension = initExtension(ExtensionType.Background, {storage, book});

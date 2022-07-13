@@ -1,37 +1,31 @@
 <template>
-  <div id="moyu-chrome-plugin-popup">
-    <Search />
-    <div class="child-container">
-      <router-view />
+    <div id="moyu-chrome-plugin-popup">
+        <suspense>
+            <RouterView />
+        </suspense>
+        <!-- <Tabbar v-model="active" :fixed="false">
+            <TabbarItem icon="home-o" name="home" >书架</TabbarItem>
+            <TabbarItem icon="contact" name="user" >我的</TabbarItem>
+        </Tabbar> -->
     </div>
-    <Loading />
-  </div>
 </template>
 
-<script>
-import Search from "./components/search.vue";
-import Loading from "./components/loading.vue";
+<script setup>
+import {ref, watch} from 'vue';
+import {Tabbar, TabbarItem} from 'vant';
+import {useRouter} from 'vue-router';
 
-export default {
-  components: { Search, Loading },
-};
+const router = useRouter();
+
+const active = ref('home')
+watch(active, (newValue) => {
+    router.replace({name: newValue})
+});
 </script>
+
 
 <style lang="less" scoped>
 #moyu-chrome-plugin-popup {
-  width: 200px;
-  max-height: 300px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #fefefe;
-
-  > div {
-    width: 100%;
-  }
-
-  .child-container {
-    flex: 1;
-    overflow: scroll;
-  }
+    width: 300px;
 }
 </style>

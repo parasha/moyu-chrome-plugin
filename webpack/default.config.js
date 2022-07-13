@@ -72,4 +72,7 @@ module.exports = {
     }),
     new VueLoaderPlugin(), //new一个实例
   ],
+  experiments: {
+    topLevelAwait: true,
+  }
 };
