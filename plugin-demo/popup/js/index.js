@@ -18,6 +18,12 @@ sendContentMessage = async () => {
   });
 }
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	console.log('popup 收到消息：', request);
+	sendResponse({data: 'response from popup'});
+});
+
+
 // 长链接的形式不好用
 // let port;
 // chrome.runtime.onConnect.addListener(function (port) {

@@ -7,7 +7,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   sendResponse('来自 content runtime 的回复');
 
-  chrome.runtime.sendMessage('content 主动发送');
+  chrome.runtime.sendMessage('content 主动发送', (response) => {
+    console.log('content 收到回复:', response);
+  });
 });
 
 

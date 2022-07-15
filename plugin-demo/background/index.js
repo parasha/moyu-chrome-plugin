@@ -7,6 +7,6 @@
 console.log('background run');
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	console.log('收到消息：', request);
-	sendResponse({data: 'from background'});
+	console.log('background 收到消息：', request);
+	sendResponse({data: 'response from background'});
 });
