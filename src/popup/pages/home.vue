@@ -22,7 +22,6 @@ const isLoading = ref(false);
 const store = useStore();
 const storageBooksList = computed(() => {
     const idList = store.storageBookIdList;
-    console.log('idList:', idList);
     const booksInfo = store.bookInfoMap;
 
     return idList.map(id => booksInfo[id]).filter(item => !!item);

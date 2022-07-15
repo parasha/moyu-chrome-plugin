@@ -1,4 +1,4 @@
-import { set, get, remove, clear } from "@/common/js/chrome-storage";
+import { set, get, remove, clear } from "./chrome-storage";
 import { Chapter, ReadHistory } from "@/definitions/book";
 
 // 获取书架中的书籍列表
@@ -47,8 +47,7 @@ export const getReadHistoryById = async (id: number) => {
 export const setReadHistory = async (bookId: number, chapterInfo: Chapter) => {
     const readHistory = await getReadHistory() || {};
     // 没必要保存正文，太占空间
-    chapterInfo.content = '';
-    const newHistory = { ...readHistory, [bookId]: chapterInfo }
+    const newHistory = { ...readHistory, [bookId]: {...chapterInfo, content: ''} }
     await set("books-read-schedule", newHistory);
     return newHistory;
 };

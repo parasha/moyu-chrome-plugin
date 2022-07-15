@@ -1,7 +1,9 @@
 import { createApp } from "vue";
-import { port } from './port';
 import App from './App.vue';
+import { initMessageChannel } from '@/common/js/chrome-message';
 import { Chapter } from '@/definitions/book';
+
+const port = await initMessageChannel();
 
 const insertWindow = (defaultChapter: Chapter) => {
   const oldDom = document.querySelector('#moyu-chrome-chrome-plugin-insert-container')
@@ -17,7 +19,8 @@ const insertWindow = (defaultChapter: Chapter) => {
   app.mount(AppDom);
 };
 
-port.onMessage.addListener(({ type, value }: { type: string, value: any }) => {
+port.addListener(({ request }) => {
+  const { type, value } = request;
   if (type === 'open-book') {
     insertWindow(value);
   }

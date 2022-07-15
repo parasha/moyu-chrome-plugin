@@ -10,9 +10,9 @@
     </div>
 </template>
 
-<script setup>
-import {ref, watch} from 'vue';
-import {Tabbar, TabbarItem} from 'vant';
+<script lang="ts" setup>
+import {ref, watch, provide} from 'vue';
+// import {Tabbar, TabbarItem} from 'vant';
 import {useRouter} from 'vue-router';
 
 const router = useRouter();

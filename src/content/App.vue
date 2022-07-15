@@ -11,6 +11,7 @@
 
 <script lang="ts" setup>
 import { inject, ref, defineProps, nextTick } from 'vue';
+import { BaseMessage, ChannelType } from '@/common/js/chrome-message';
 import { Chapter, BookDetail } from '@/definitions/book';
 import ChapterPage from './Chapter.vue';
 import MenuPage from './Menu.vue';
@@ -34,31 +35,33 @@ const resetDomScroll = (page: any) => {
     } catch { }
 };
 
-const port = inject<any>('port');
+const port = inject<BaseMessage>('port');
 
-port.onMessage.addListener(async ({ type, value }: { type: string, value: any }) => {
-    switch (type) {
-        case 'show-chapter':
-            chapterInfo.value = value;
-            page.value = 'read';
-            await nextTick();
-            resetDomScroll(chapterPage);
-            break;
-        case 'show-menu':
-            bookInfo.value = value;
-            page.value = 'menu';
-            await nextTick();
-            resetDomScroll(menuPage);
-            break;
+
+const scrollPage = async (chapterId: number) => {
+    try {
+        const res = await port?.sendMessage(ChannelType.Background, { type: 'get-chapter', value: { bookId: chapterInfo.value.bookId, chapterId } });
+        chapterInfo.value = res;
+        page.value = 'read';
+        await nextTick();
+        resetDomScroll(chapterPage);
+    } catch (error) {
+        console.log('获取章节报错：', error)
+
     }
-});
 
-const scrollPage = (chapterId: number) => {
-    port.postMessage({ type: 'get-chapter', value: { bookId: chapterInfo.value.bookId, chapterId } });
 };
 
-const toMenuPage = () => {
-    port.postMessage({ type: 'get-menu', value: { bookId: chapterInfo.value.bookId } });
+const toMenuPage = async () => {
+    try {
+        const res = await port?.sendMessage(ChannelType.Background, { type: 'get-menu', value: { bookId: chapterInfo.value.bookId } });
+        bookInfo.value = res;
+        page.value = 'menu';
+        await nextTick();
+        resetDomScroll(menuPage);
+    } catch (error) {
+        console.log('获取目录报错：', error)
+    }
 }
 
 </script>
