@@ -6,13 +6,14 @@
                 <div class="read-schedule ellipsis">阅读进度：{{ book.history ? book.history.title : "未读" }}</div>
                 <div class="read-schedule ellipsis">最新章节：{{ book.newChapterText }}</div>
             </div>
-            <slot :id="book.id" />
+            <div class="right">
+                <slot :id="book.id" />
+            </div>
         </div>
     </VanList>
 </template>
 
 <script lang="ts" setup>
-import { List } from "vant";
 import { defineProps, inject } from "vue";
 import { BookDetail, BookInfo } from '@/definitions/book';
 import { BaseMessage, ChannelType } from '@/common/js/chrome-message';
@@ -57,11 +58,12 @@ const openBook = (book: BookDetail | BookInfo) => {
 
     .right {
         flex-shrink: 0;
+        width: 50px;
     }
 }
 
 .ellipsis {
-    max-width: 250px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

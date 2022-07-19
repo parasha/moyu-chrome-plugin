@@ -1,5 +1,5 @@
 <template>
-    <ul class="menu-list" v-if="props.book">
+    <ul class="moyu-reader-menu-list" v-if="props.book">
         <li v-for="chapter of props.book.chapterList" :key="`book-${props.book.bookId}-chapter-${chapter.id}`" @click="openChapter(chapter.id)">
             {{ chapter.title }}
         </li>
@@ -23,7 +23,7 @@ const openChapter = (chapterId: number) => {
 </script>
 
 <style lang="less" scoped>
-.menu-list {
+.moyu-reader-menu-list {
   height: 130px;
   padding: 5px;
   box-sizing: content-box;

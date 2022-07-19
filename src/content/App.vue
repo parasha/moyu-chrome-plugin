@@ -1,9 +1,9 @@
 <template>
     <div id="moyu-reader-contnet-window">
-        <div class="window-header">
-            <span class="close" @click="toggleContainerIsClose">-</span>
+        <div class="moyu-reader-window-header">
+            <span class="close-point-button" @click="toggleContainerIsClose">-</span>
         </div>
-        <div class="main-container" :class="{ 'close': isClose }">
+        <div class="moyu-reader-main-container" :class="{ 'moyu-reader-close-container': isClose }">
             <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="updatePage"
                 @menu="toMenuPage" />
             <MenuPage v-if="page === 'menu'" ref="menuPage" :book="bookInfo" @chapter="updatePage" />
@@ -88,12 +88,12 @@ const toMenuPage = async () => {
     top: calc(100vh - 200px);
     right: 20px;
 
-    .window-header {
+    .moyu-reader-window-header {
         padding-left: 5px;
         height: 20px;
         background-color: rgb(254, 233, 48);
 
-        .close {
+        .close-point-button {
             font-size: 12px;
             line-height: 1;
             padding: 0 4px;
@@ -104,11 +104,11 @@ const toMenuPage = async () => {
         }
     }
 
-    .main-container {
-        transition: all 1s linear;
+    .moyu-reader-main-container {
+        transition: height 1s;
     }
 
-    .close {
+    .moyu-reader-close-container {
         height: 0;
     }
 }

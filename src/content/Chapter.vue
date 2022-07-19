@@ -1,12 +1,12 @@
 <template>
-    <div class="content-container" v-if="props.chapter">
-        <div class="content" v-html="props.chapter.content"></div>
-        <div class="content-handle">
-            <div class="btn" :class="{ disabled: !props.chapter.preId }" @click="loadChapter(props.chapter.preId)">
+    <div class="moyu-reader-content-container" v-if="props.chapter">
+        <div class="moyu-reader-chapter-content" v-html="props.chapter.content"></div>
+        <div class="moyu-reader-content-handle">
+            <div class="moyu-reader-content-handle-btn" :class="{ disabled: !props.chapter.preId }" @click="loadChapter(props.chapter.preId)">
                 上一章
             </div>
-            <div class="btn" @click="loadMenu">返回目录</div>
-            <div class="btn" :class="{ disabled: !props.chapter.nextId }" @click="loadChapter(props.chapter.nextId)">
+            <div class="moyu-reader-content-handle-btn" @click="loadMenu">返回目录</div>
+            <div class="moyu-reader-content-handle-btn" :class="{ disabled: !props.chapter.nextId }" @click="loadChapter(props.chapter.nextId)">
                 下一章
             </div>
         </div>
@@ -38,24 +38,26 @@ const loadMenu = () => {
 </script>
 
 <style lang="less" scoped>
-.content-container {
+.moyu-reader-content-container {
     height: 130px;
     padding: 5px;
     box-sizing: content-box;
     overflow-y: auto;
 
-    .content {
+    .moyu-reader-chapter-content {
         padding: 6px 6px 50px;
+        font-size: 13px;
+        color: #666;
     }
 
-    .content-handle {
+    .moyu-reader-content-handle {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         padding-top: 5px;
         border-top: 1px solid #e5e5e5;
 
-        .btn {
+        .moyu-reader-content-handle-btn {
             cursor: pointer;
             margin: 0 10px;
         }
