@@ -5,26 +5,20 @@
         <suspense>
             <RouterView />
         </suspense>
-        <!-- <Tabbar v-model="active" :fixed="false">
-            <TabbarItem icon="home-o" name="home" >书架</TabbarItem>
+        <!-- <VanTabbar route :fixed="false">
+            <VanTabbarItem icon="home-o" replace to="/home" >书架</VanTabbarItem>
             <TabbarItem icon="contact" name="user" >我的</TabbarItem>
-        </Tabbar> -->
+        </VanTabbar> -->
     </div>
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, provide} from 'vue';
+import {ref} from 'vue';
 // 这里感觉是 vant 的问题，组件使用必须带一个Van前缀
-// import {Tabbar, TabbarItem} from 'vant';
-import { Field } from "vant";
+import {Field, Tabbar, TabbarItem} from 'vant';
 import {useRouter} from 'vue-router';
 
 const router = useRouter();
-
-// const active = ref('home')
-// watch(active, (newValue) => {
-//     router.replace({name: newValue})
-// });
 
 //搜索
 const bookname = ref("");

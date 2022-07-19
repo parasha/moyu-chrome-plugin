@@ -1,9 +1,11 @@
 <template>
-    <div id="moyu-reader-contnet-window">
+    <div id="moyu-reader-contnet-window" :class="{ 'moyu-reader-hide-window': isClose }">
         <div class="moyu-reader-window-header">
-            <span class="close-point-button" @click="toggleContainerIsClose">-</span>
+            <span class="close-point-button" @click="toggleContainerIsClose">
+                <VanIcon :name="isClose ? 'plus' : 'minus'" size="12px" />
+            </span>
         </div>
-        <div class="moyu-reader-main-container" :class="{ 'moyu-reader-close-container': isClose }">
+        <div class="moyu-reader-main-container">
             <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="updatePage"
                 @menu="toMenuPage" />
             <MenuPage v-if="page === 'menu'" ref="menuPage" :book="bookInfo" @chapter="updatePage" />
@@ -17,6 +19,7 @@ import { BaseMessage, ChannelType } from '@/common/js/chrome-message';
 import { Chapter, BookDetail } from '@/definitions/book';
 import ChapterPage from './Chapter.vue';
 import MenuPage from './Menu.vue';
+import { Icon } from 'vant';
 
 const props = defineProps<{ chapter: Chapter }>();
 
@@ -86,30 +89,31 @@ const toMenuPage = async () => {
 
     position: fixed;
     top: calc(100vh - 200px);
+    // left: calc(100vw - 350px);
     right: 20px;
 
+    transition: height 0.5s linear, width 0.2s linear;
+
+
     .moyu-reader-window-header {
-        padding-left: 5px;
+        padding-right: 5px;
         height: 20px;
         background-color: rgb(254, 233, 48);
+        text-align: right;
 
         .close-point-button {
             font-size: 12px;
             line-height: 1;
-            padding: 0 4px;
+            padding: 1px;
             border-radius: 50%;
             background-color: rgba(248, 248, 248, .6);
-            text-align: center;
             cursor: pointer;
         }
     }
+}
 
-    .moyu-reader-main-container {
-        transition: height 1s;
-    }
-
-    .moyu-reader-close-container {
-        height: 0;
-    }
+.moyu-reader-hide-window {
+    width: 25px !important;
+    height: 20px !important;
 }
 </style>

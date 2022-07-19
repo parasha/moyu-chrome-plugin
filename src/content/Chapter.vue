@@ -48,6 +48,7 @@ const loadMenu = () => {
         padding: 6px 6px 50px;
         font-size: 13px;
         color: #666;
+        word-break: break-all;
     }
 
     .moyu-reader-content-handle {
