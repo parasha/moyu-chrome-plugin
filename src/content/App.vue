@@ -1,11 +1,13 @@
 <template>
     <div id="moyu-reader-contnet-window">
         <div class="window-header">
-            <span class="close">-</span>
+            <span class="close" @click="toggleContainerIsClose">-</span>
         </div>
-        <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="scrollPage"
-            @menu="toMenuPage" />
-        <MenuPage v-if="page === 'menu'" ref="menuPage" :book="bookInfo" @chapter="scrollPage" />
+        <div class="main-container" :class="{ 'close': isClose }">
+            <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="updatePage"
+                @menu="toMenuPage" />
+            <MenuPage v-if="page === 'menu'" ref="menuPage" :book="bookInfo" @chapter="updatePage" />
+        </div>
     </div>
 </template>
 
@@ -17,6 +19,12 @@ import ChapterPage from './Chapter.vue';
 import MenuPage from './Menu.vue';
 
 const props = defineProps<{ chapter: Chapter }>();
+
+const isClose = ref(false);
+
+const toggleContainerIsClose = () => {
+    isClose.value = !isClose.value;
+}
 
 // 组件路由
 const page = ref('read');
@@ -35,33 +43,34 @@ const resetDomScroll = (page: any) => {
     } catch { }
 };
 
+// message 事件监听
+// sendMessage 的 sendResponse 不好使，不确定是哪里有问题
 const port = inject<BaseMessage>('port');
-
-
-const scrollPage = async (chapterId: number) => {
-    try {
-        const res = await port?.sendMessage(ChannelType.Background, { type: 'get-chapter', value: { bookId: chapterInfo.value.bookId, chapterId } });
-        chapterInfo.value = res;
-        page.value = 'read';
-        await nextTick();
-        resetDomScroll(chapterPage);
-    } catch (error) {
-        console.log('获取章节报错：', error)
-
+port?.addListener(async request => {
+    const { type, value } = request;
+    switch (type) {
+        case 'load-chapter': {
+            chapterInfo.value = value;
+            page.value = 'read';
+            await nextTick();
+            resetDomScroll(chapterPage);
+            break;
+        }
+        case 'load-menu': {
+            bookInfo.value = value;
+            page.value = 'menu';
+            await nextTick();
+            resetDomScroll(menuPage);
+            break;
+        }
     }
+});
+const updatePage = async (chapterId: number) => {
+    port?.sendMessage(ChannelType.Background, { type: 'get-chapter', value: { bookId: chapterInfo.value.bookId, chapterId } });
 
 };
-
 const toMenuPage = async () => {
-    try {
-        const res = await port?.sendMessage(ChannelType.Background, { type: 'get-menu', value: { bookId: chapterInfo.value.bookId } });
-        bookInfo.value = res;
-        page.value = 'menu';
-        await nextTick();
-        resetDomScroll(menuPage);
-    } catch (error) {
-        console.log('获取目录报错：', error)
-    }
+    port?.sendMessage(ChannelType.Background, { type: 'get-menu', value: { bookId: chapterInfo.value.bookId } });
 }
 
 </script>
@@ -69,14 +78,14 @@ const toMenuPage = async () => {
 <style lang="less" scoped>
 #moyu-reader-contnet-window {
     width: 300px;
-    height: 150px;
+    overflow: hidden;
     background-color: rgb(253, 243, 139);
     border: 0.5px solid #f2f2f2;
     border-radius: 4px;
     box-shadow: 0 -2px 2px 0 rgba(200, 201, 204, 0.8);
 
     position: fixed;
-    bottom: 30px;
+    top: calc(100vh - 200px);
     right: 20px;
 
     .window-header {
@@ -93,6 +102,14 @@ const toMenuPage = async () => {
             text-align: center;
             cursor: pointer;
         }
+    }
+
+    .main-container {
+        transition: all 1s linear;
+    }
+
+    .close {
+        height: 0;
     }
 }
 </style>

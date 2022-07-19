@@ -19,7 +19,7 @@ const insertWindow = (defaultChapter: Chapter) => {
   app.mount(AppDom);
 };
 
-port.addListener(({ request }) => {
+port.addListener((request) => {
   const { type, value } = request;
   if (type === 'open-book') {
     insertWindow(value);

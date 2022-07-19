@@ -26,6 +26,7 @@ const openChapter = (chapterId: number) => {
 .menu-list {
   height: 130px;
   padding: 5px;
+  box-sizing: content-box;
   overflow-y: auto;
 
   li {

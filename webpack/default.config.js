@@ -2,9 +2,11 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //提取css到单独文件的插件
 const { VueLoaderPlugin } = require("vue-loader/dist/index");
+const { VantResolver } = require('unplugin-vue-components/resolvers');
+const ComponentsPlugin = require('unplugin-vue-components/webpack');
 
 module.exports = {
-  
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "../src"),
@@ -67,6 +69,9 @@ module.exports = {
     ],
   },
   plugins: [
+    ComponentsPlugin({
+      resolvers: [VantResolver()],
+    }),
     new MiniCssExtractPlugin({
       filename: "css/[name].[contenthash:8].css",
     }),

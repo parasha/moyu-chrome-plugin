@@ -41,6 +41,7 @@ const loadMenu = () => {
 .content-container {
     height: 130px;
     padding: 5px;
+    box-sizing: content-box;
     overflow-y: auto;
 
     .content {

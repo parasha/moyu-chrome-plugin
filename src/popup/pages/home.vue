@@ -1,15 +1,16 @@
 <template>
     <div class="page-home">
-        <Field class="book-search" v-model="bookname" left-icon="search" placeholder="小说名称、作者"
+        <VanField class="book-search" v-model="bookname" left-icon="search" placeholder="小说名称、作者"
             @keydown="handleKeyDown" />
         <BookList class="book-list" :loading="isLoading" :list="storageBooksList" v-slot="slotProps">
-            <Button round plain type="primary" size="small"
-                @click.prevent.stop="deleteBookFromStorage(slotProps.id)">删除</Button>
+            <VanButton round plain type="primary" size="small"
+                @click.prevent.stop="deleteBookFromStorage(slotProps.id)">删除</VanButton>
         </BookList>
     </div>
 </template>
 
 <script lang="ts" setup>
+// 这里感觉是 vant 的问题，组件使用必须带一个Van前缀
 import { Field, Button } from "vant";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";

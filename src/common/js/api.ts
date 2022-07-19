@@ -4,9 +4,11 @@ import { BookInfo, BookDetail, Chapter } from "@/definitions/book";
 import {API_DOMAIN} from './constant';
 
 // 这里主要处理请求
-const request = createRequest(API_DOMAIN, {
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-});
+// const request = createRequest(API_DOMAIN, {
+//   headers: { "Content-Type": "application/x-www-form-urlencoded" },
+// });
+
+const request = createRequest(API_DOMAIN);
 
 const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
 /**

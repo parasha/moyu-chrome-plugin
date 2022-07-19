@@ -1,5 +1,5 @@
 <template>
-    <List v-model:loading="props.loading" :finished="true" finished-text="没有更多了">
+    <VanList v-model:loading="props.loading" :finished="true" finished-text="没有更多了">
         <div v-for="book of props.list" :key="`book-list-item-${book.id}`" class="book-item">
             <div class="left noselect" @click="openBook(book)">
                 <p class="book-name ellipsis">{{ book.title }}</p>
@@ -8,7 +8,7 @@
             </div>
             <slot :id="book.id" />
         </div>
-    </List>
+    </VanList>
 </template>
 
 <script lang="ts" setup>

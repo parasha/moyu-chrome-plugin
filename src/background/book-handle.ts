@@ -13,8 +13,7 @@ class BookHandle {
 
     initMessageEvent() {
         // 添加事件监听
-        this.port.addListener(async ({ request, sendResponse }) => {
-            console.log('background book handler:', request);
+        this.port.addListener(async (request) => {
             const { type, value } = request;
             switch (type) {
                 case 'select-book': {
@@ -26,13 +25,12 @@ class BookHandle {
                     const chapter = await getBookContent(value.bookId, value.chapterId);
                     // 保存一个阅读进度
                     setReadHistory(value.bookId, chapter);
-                    console.log('before response:', chapter);
-                    sendResponse(chapter);
+                    this.port.sendMessage(ChannelType.Content, { type: 'load-chapter', value: chapter })
                     break;
                 }
                 case 'get-menu': {
                     const bookInfo = await getBookDetail(value.bookId);
-                    sendResponse(bookInfo);
+                    this.port.sendMessage(ChannelType.Content, { type: 'load-menu', value: bookInfo })
                     break;
                 }
             }

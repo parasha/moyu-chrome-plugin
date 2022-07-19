@@ -1,7 +1,7 @@
 <template>
     <BookList class="search-list" :loading="isLoading" :list="bookList" v-slot="slotProps">
-        <Button v-if="!checkBookInStorage(slotProps.id)" round plain type="primary" size="small"
-            @click.prevent.stop="addBookIntoStorage(slotProps.id)">收藏</Button>
+        <VanButton v-if="!checkBookInStorage(slotProps.id)" round plain type="primary" size="small"
+            @click.prevent.stop="addBookIntoStorage(slotProps.id)">收藏</VanButton>
     </BookList>
 </template>
 

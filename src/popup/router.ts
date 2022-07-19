@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[]  = [
     },
     {
         // 这个是给打包后的 popup 准备的
-        path: '/popup.html',
+        path: '/index.html',
         redirect: '/home'
     }
 ];
