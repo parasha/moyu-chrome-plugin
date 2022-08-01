@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "moyu plugin",
     "version": "0.0.1",
-    "description": "这是一段描述",
+    "description": "提早完工被压榨怎么办？",
     "icons": {
       "84": "./assets/theresa.png"
     },

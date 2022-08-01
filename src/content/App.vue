@@ -1,6 +1,8 @@
 <template>
     <div id="moyu-reader-contnet-window" :class="{ 'moyu-reader-hide-window': isClose }">
         <div class="moyu-reader-window-header">
+            <div class="left"></div>
+            <div class="title">{{ page === 'read' ? chapterInfo.title : "" }}</div>
             <span class="close-point-button" @click="toggleContainerIsClose">
                 <VanIcon :name="isClose ? 'plus' : 'minus'" size="12px" />
             </span>
@@ -19,7 +21,6 @@ import { BaseMessage, ChannelType } from '@/common/js/chrome-message';
 import { Chapter, BookDetail } from '@/definitions/book';
 import ChapterPage from './Chapter.vue';
 import MenuPage from './Menu.vue';
-import { Icon } from 'vant';
 
 const props = defineProps<{ chapter: Chapter }>();
 
@@ -91,6 +92,7 @@ const toMenuPage = async () => {
     top: calc(100vh - 200px);
     // left: calc(100vw - 350px);
     right: 20px;
+    z-index: 114514;
 
     transition: height 0.5s linear, width 0.2s linear;
 
@@ -99,7 +101,18 @@ const toMenuPage = async () => {
         padding-right: 5px;
         height: 20px;
         background-color: rgb(254, 233, 48);
-        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: #666;
+            font-size: 12px;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
         .close-point-button {
             font-size: 12px;
