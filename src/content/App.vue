@@ -10,7 +10,7 @@
         <div class="moyu-reader-main-container">
             <ChapterPage v-if="page === 'read'" ref="chapterPage" :chapter="chapterInfo" @page="updatePage"
                 @menu="toMenuPage" />
-            <MenuPage v-if="page === 'menu'" ref="menuPage" :book="bookInfo" @chapter="updatePage" />
+            <MenuPage v-if="page === 'menu' && bookInfo" ref="menuPage" :book="bookInfo" @chapter="updatePage" />
         </div>
     </div>
 </template>

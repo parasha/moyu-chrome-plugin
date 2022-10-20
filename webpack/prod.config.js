@@ -26,7 +26,7 @@ const devWebpack = {
     new webpack.DefinePlugin({
       // 定义环境和变量
       ENV: JSON.stringify("production"),
-      BIQUGE_DOMAIN: JSON.stringify("https://www.shuquge.com"),
+      BIQUGE_DOMAIN: JSON.stringify("https://www.ishuquge.com"),
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../static/prod.html"),

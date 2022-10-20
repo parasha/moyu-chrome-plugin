@@ -1,6 +1,6 @@
 <template>
     <ul class="moyu-reader-menu-list" v-if="props.book">
-        <li v-for="chapter of props.book.chapterList" :key="`book-${props.book.bookId}-chapter-${chapter.id}`" @click="openChapter(chapter.id)">
+        <li v-for="chapter of props.book.chapterList" :key="`book-${props.book.id}-chapter-${chapter.id}`" @click="openChapter(chapter.id)">
             {{ chapter.title }}
         </li>
     </ul>
@@ -34,5 +34,4 @@ const openChapter = (chapterId: number) => {
     cursor: pointer;
   }
 }
-
 </style>
