@@ -12,7 +12,7 @@ const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
  * @param {string} bookname
  */
 export const searchBook = async (bookname: string) => {
-  const res: string = await request.post('/search.php', `searchkey=${encodeURIComponent(bookname)}`, {headers: {"content-type": "application/x-www-form-urlencoded",}});
+  const res: string = await request.post('/search.php', `searchkey=${encodeURIComponent(bookname)}`, {headers: {"Content-Type": "application/x-www-form-urlencoded",}});
   const $ = cheerio.load(res);
   const result: BookInfo[] = [];
   $(".bookbox .bookinfo").each((index, bookDom) => {

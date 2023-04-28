@@ -6,7 +6,7 @@ declare module '*.vue' {
 
 // 环境变量
 declare const ENV: string;
-
+declare const BIQUGE_DOMAIN: string;
 
 // chrome 对象
 declare const chrome: any;
