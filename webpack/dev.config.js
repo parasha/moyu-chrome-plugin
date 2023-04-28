@@ -20,7 +20,7 @@ const devWebpack = {
     open: true,
     proxy: {
       "/biquge-api": {
-        target: "https://www.ishuquge.com",
+        target: "https://www.ishuquge.la",
         secure: true,
         changeOrigin: true,
         pathRewrite: { "^/biquge-api": "" },

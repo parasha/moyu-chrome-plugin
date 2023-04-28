@@ -4,10 +4,6 @@ import { BookInfo, BookDetail, Chapter } from "@/definitions/book";
 import {API_DOMAIN} from './constant';
 
 // 这里主要处理请求
-// const request = createRequest(API_DOMAIN, {
-//   headers: { "Content-Type": "application/x-www-form-urlencoded" },
-// });
-
 const request = createRequest(API_DOMAIN);
 
 const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
@@ -16,9 +12,7 @@ const bookIdReg = /\/txt\/([0-9]+)\/index\.html/;
  * @param {string} bookname
  */
 export const searchBook = async (bookname: string) => {
-  const res: string = await request.post(
-    `/search.php?searchkey=${encodeURIComponent(bookname)}`
-  );
+  const res: string = await request.post('/search.php', `searchkey=${encodeURIComponent(bookname)}`, {headers: {"content-type": "application/x-www-form-urlencoded",}});
   const $ = cheerio.load(res);
   const result: BookInfo[] = [];
   $(".bookbox .bookinfo").each((index, bookDom) => {

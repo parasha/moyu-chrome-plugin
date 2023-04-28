@@ -12,7 +12,7 @@ class Reqeuest {
     this.baseUrl = baseUrl;
   }
 
-  async get(url: string, query?: {[key: string]: string}): Promise<string> {
+  async get(url: string, query?: {[key: string]: string}, config = {headers}): Promise<string> {
     let fetchUrl = `${this.baseUrl}${url}`;
     // 处理参数
     if (query) {
@@ -26,23 +26,19 @@ class Reqeuest {
     // 发起请求
     const res = await fetch(fetchUrl, {
       method: 'GET',
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      }
+      ...config
     });
 
     return this.responseInterceptor(res);
   }
 
-  async post(url: string, body?: {[key: string]: string}) {
+  async post(url: string, body?: any, config = {headers}) {
     const fetchUrl = `${this.baseUrl}${url}`;
 
     const res = await fetch(fetchUrl, {
       method: 'POST',
-      body: body? JSON.stringify(body) : undefined,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      }
+      body: body ? typeof body === 'string' ? body : JSON.stringify(body) : undefined,
+      ...config
     });
 
     return this.responseInterceptor(res);
@@ -62,40 +58,3 @@ class Reqeuest {
 export const createRequest = (baseURL = "") => {
   return new Reqeuest(baseURL);
 };
-
-// export const createRequest = (baseURL = "", config: AxiosRequestConfig) => {
-//   const axios = Axios.create({
-//     baseURL: baseURL,
-//     withCredentials: true,
-//     timeout: 10000,
-//     headers: headers,
-//     xsrfCookieName: undefined,
-//     ...config,
-//   });
-
-//   // 请求拦截
-//   axios.interceptors.request.use((config) => {
-//     return config;
-//   }, error => {
-//     console.log('请求报错：', error);
-//   });
-
-//   // 响应拦截
-//   axios.interceptors.response.use(
-//     (res) => {
-//       return Promise.resolve(res.data);
-//     },
-//     (res) => {
-//       console.log('响应报错：', res);
-//       if (res.response) {
-//         // 错误提示
-//         return Promise.reject({ msg: res.response.statusText });
-//       } else {
-//         // 默认的错误提示
-//         return Promise.reject({ msg: "网络错误，请稍后再试。" });
-//       }
-//     }
-//   );
-
-//   return axios;
-// };
